@@ -1,4 +1,4 @@
-﻿using System;
+ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +20,34 @@ namespace pokemon
         SpriteBatch spriteBatch;
 
         int step=1;
-        int walked = 0;
+        int walked = 0, climbed=0;
         int counter=0;
+        int ladder = 1;
+        int jumper = 0;
+        int percent = 400; int got;
+
+        private bool collisionWithFloor() { return false; }
+
+        private void jump(GameTime gameTime) { 
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            Position -= new Vector2(0, elapsed) *  percent;
+            percent -= 10;
+
+            if (collisionWithFloor()) {
+                jumping = 0;
+                percent = 400;
+            }
+        
+        }
+
+        /*
+         * Steps:
+         * 1 to 4: walking right
+         * -1 to -4: walking left
+         * 6 to 9: climbing up
+         * -6 to -9: climbing down
+         */
 
         private Rectangle walk(GameTime gameTime)
         {
@@ -35,30 +61,37 @@ namespace pokemon
                 counter = 0;
                 if (walked == 1)
                 {
-                    if (step == 4)
-                    {
-                        step = 1;
-                    }
+                    walked = 0;
+                    if (step == 4) { step = 1; }
                     else { step++; }
                 }
-                if (walked == -1)
+                else if (walked == -1)
                 {
-                    if (step == -4)
-                    {
-                        step = -1;
-                    }
+                    walked = 0;
+                    if (step == -4) { step = -1; }
                     else { step--; }
                 }
+                if (climbed == 1) {
+                    climbed = 0;
+                    if (step == 9) { step = 6; }
+                    else { step++; }
+                }
             }
-            walked = 0;
+            
+            //walking steps
             if (step==1) rec = new Rectangle(0, 0, 64, 64);
-            else if (step==2) rec = new Rectangle(64, 0, 64, 64);
+            else if (step == 2) rec = new Rectangle(64, 0, 64, 64);
             else if (step == 3) rec = new Rectangle(128, 0, 64, 64);
             else if (step == 4) rec = new Rectangle(64, 0, 64, 64);
             else if (step == -1) rec = new Rectangle(0, 64, 64,64);
             else if (step == -2) rec = new Rectangle(64, 64, 64, 64);
             else if (step == -3) rec = new Rectangle(128, 64, 64, 64);
-            else rec = new Rectangle(64, 64, 64, 64);
+            else if (step == -4) rec = new Rectangle(64, 64, 64, 64);
+            //climbing steps
+            else if (step == 6) rec = new Rectangle(0, 128, 64, 64);
+            else if (step == 7) rec = new Rectangle(64, 128, 64, 64);
+            else if (step == 8) rec = new Rectangle(128, 128, 64, 64);
+            else rec = new Rectangle(64, 128, 64, 64);
 
             return rec;
         }
@@ -77,6 +110,7 @@ namespace pokemon
 
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
+        int jumping;
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -84,7 +118,27 @@ namespace pokemon
 
             if (k.IsKeyDown(Keys.Up))
             {
-                //accel += elapsed;
+                if (ladder > 0) // if he's going up a ladder
+                {
+                    if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
+                        step = 6;
+                    Position -= new Vector2(0, elapsed) * 80;
+                    climbed = 1;
+                }
+                else { //if he's jumping
+                   jumping=1;
+                }
+            }
+
+            if (k.IsKeyDown(Keys.Down))
+            {
+                if (ladder > 0) // if he's going down a ladder
+                {
+                    if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
+                        step = 6;
+                    Position += new Vector2(0, elapsed) * 80;
+                    climbed = 1;
+                }
 
             }
 
@@ -92,7 +146,7 @@ namespace pokemon
             {
                 Position -= new Vector2(elapsed, 0) * 100;
                 walked = -1;
-                if (step > 0)
+                if (step > 0) //if he was walking right or was climbing
                 {
                     step = -1;
                 }
@@ -100,10 +154,9 @@ namespace pokemon
             }
             if (k.IsKeyDown(Keys.Right))
             {
-                //angle += elapsed;
                 Position += new Vector2(elapsed, 0) * 100;
                 walked = 1;
-                if (step < 0)
+                if ((step < 0) || (step > 6)) //if he was walking left or was climbing
                 {
                     step = 1;
                 }
@@ -111,13 +164,21 @@ namespace pokemon
 
             }
 
+            if (jumping == 1) { jump(gameTime); }
+
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
         {
-            Rectangle rec=walk(gameTime);
 
+            if (jumping == 1) { //jumpSprite(); 
+            }
+            else
+            {
+               // Rectangle rec = walk(gameTime);
+            }
 
+            Rectangle rec = walk(gameTime);
             spriteBatch.Begin();
             //spriteBatch.Draw(Sprite, Position, Color.White);
             spriteBatch.Draw(Sprite,Position,rec,Color.White,0,Vector2.Zero,1,SpriteEffects.None,0);
