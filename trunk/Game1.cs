@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -17,10 +18,14 @@ namespace Pokemon
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Vector2[] TheMatrix;
-        Ground[] myGround = new Ground[3072];
+        DrawableGameComponent[] myWorld = new DrawableGameComponent[3072];
+        public static int[] level;
+        private StreamReader readLevel;
+        
 
         public Vector2[] MatrixInit()
         {   int counter=0;
@@ -37,9 +42,28 @@ namespace Pokemon
                     counter++;
                 }
             }
-
             return TheMatrix;
         }
+
+        public void LevelRead()
+        {
+            FileInfo myFile = new FileInfo("worstlevelever.txt");
+            level = new int[3072];
+            readLevel = myFile.OpenText();
+            int myCurrentInt;
+
+            for (int i = 0; i < level.Length; i++)
+            {
+                myCurrentInt = readLevel.Read();
+
+                if (myCurrentInt != 13 && myCurrentInt != 10)
+                level[i] = readLevel.Read() - 48;
+            }
+
+            readLevel.Close();
+        }
+
+
 
         public Game1()
         {
@@ -57,10 +81,11 @@ namespace Pokemon
         {
             // TODO: Add your initialization logic here
             MatrixInit();
+            LevelRead();
             for (int i = 0; i < TheMatrix.Length; i++)
             {
                 Components.Add(
-                myGround[i] = new Ground(this, TheMatrix[i], 1)
+                myWorld[i] = new Ground(this, TheMatrix[i], level[i])
                 );
             }
             base.Initialize();
