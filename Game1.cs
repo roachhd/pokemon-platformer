@@ -51,7 +51,7 @@ namespace Pokemon
             level = new int[768];
             int counter = 0;
             string line;
-            while ((line = myFile.ReadLine()) != null)
+            while ((line = myFile.ReadLine()) != null && counter < level.Length)
             {
                 for (int i = 0; i < line.Length; i++)
                 {
