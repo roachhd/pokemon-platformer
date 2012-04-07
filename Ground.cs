@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,10 +39,11 @@ namespace Pokemon
         {
             Vector2 offset = new Vector2(sprite.Width / 2, sprite.Height / 2);
 
+            if (this.type == 0) return;
             spritebatch.Begin();
             spritebatch.Draw(sprite,
-            position - offset,
-            Color.White);
+                             position - offset,
+                             Color.White);
             spritebatch.End();
         }
 
