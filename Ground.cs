@@ -37,21 +37,38 @@ namespace Pokemon
 
         public override void Draw(GameTime gameTime)
         {
-            Vector2 offset = new Vector2(sprite.Width / 2, sprite.Height / 2);
-
             if (this.type == 0) return;
-            spritebatch.Begin();
-            spritebatch.Draw(sprite,
-                             position - offset,
-                             Color.White);
-            spritebatch.End();
+            if (sprite == null) return;
+                    Vector2 offset = new Vector2(sprite.Width / 2, sprite.Height / 2);
+
+                    spritebatch.Begin();
+                    spritebatch.Draw(sprite,
+                    position - offset,
+                    Color.White);
+                    spritebatch.End();
+              
         }
 
 
 
         protected override void LoadContent()
         {
-            sprite = Game.Content.Load<Texture2D>("test");
+            switch(type){
+                case 0:
+                    sprite = Game.Content.Load<Texture2D>("test");
+                    break;
+                case 1:
+                    sprite = Game.Content.Load<Texture2D>("test");
+                    break;
+                case 2:
+                    sprite = Game.Content.Load<Texture2D>("ground test");
+                    break;
+                case 3:
+                    sprite = Game.Content.Load<Texture2D>("withit");
+                    break;
+
+            }
+
             spritebatch = new SpriteBatch(Game.GraphicsDevice);
         }
 
