@@ -18,25 +18,25 @@ namespace Pokemon
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Vector2[] TheMatrix;
-        DrawableGameComponent[] myWorld = new DrawableGameComponent[3072];
+        DrawableGameComponent[] myWorld = new DrawableGameComponent[768];
         public static int[] level;
-        private StreamReader readLevel;
-        
+
 
         public Vector2[] MatrixInit()
-        {   int counter=0;
-            int h = 2400;
+        {
+            int counter = 0;
+            int h = 600;
             int w = 800;
             int x = 25; //something
             /*Vector2[] result*/
-            TheMatrix = new Vector2[3072];
-            for (int i = 0; i < h; i+=x)
+            TheMatrix = new Vector2[768];
+            for (int j = 0; j < h ; j += x)
             {
-                for (int j = 0; j < w; j += x)
+                for (int i = 0; i < w; i += x)
                 {
                     TheMatrix[counter] = new Vector2(i + (x / 2), j + (x / 2));
                     counter++;
@@ -45,22 +45,23 @@ namespace Pokemon
             return TheMatrix;
         }
 
-        public void LevelRead()
+        public int[] LevelRead()
         {
-            FileInfo myFile = new FileInfo("worstlevelever.txt");
-            level = new int[3072];
-            readLevel = myFile.OpenText();
-            int myCurrentInt;
-
-            for (int i = 0; i < level.Length; i++)
+            StreamReader myFile = new StreamReader("worstlevelever.txt");
+            level = new int[768];
+            int counter = 0;
+            string line;
+            while ((line = myFile.ReadLine()) != null)
             {
-                myCurrentInt = readLevel.Read();
-
-                if (myCurrentInt != 13 && myCurrentInt != 10)
-                level[i] = readLevel.Read() - 48;
+                for (int i = 0; i < line.Length; i++)
+                {
+                    level[counter] = line[i] - 48;
+                    counter++;
+                }
+                
             }
-
-            readLevel.Close();
+            myFile.Close();
+            return level;
         }
 
 
@@ -80,8 +81,8 @@ namespace Pokemon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            MatrixInit();
-            LevelRead();
+            TheMatrix = MatrixInit();
+            level = LevelRead();
             for (int i = 0; i < TheMatrix.Length; i++)
             {
                 Components.Add(
