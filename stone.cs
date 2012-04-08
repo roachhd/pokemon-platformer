@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-namespace WindowsGame1
+namespace pokemon
 {
     class stone: DrawableGameComponent
     {
@@ -17,6 +17,7 @@ namespace WindowsGame1
         public Vector2 Position { get; set; }
         Texture2D Sprite;
         SpriteBatch spriteBatch;
+        public Rectangle boundingBox { get; set; } 
 
         public stone(int t, int m, Game g, Vector2 position):base(g)
         {
@@ -43,17 +44,25 @@ namespace WindowsGame1
             }
             
             
+
             spriteBatch = new SpriteBatch(Game.GraphicsDevice); 
         }
 
         public override void Draw(GameTime gameTime)
         {
+            //Set bounding box for collision detection
+            //Possibly throw this into update, but then again, stones don't move...
+            boundingBox = new Rectangle((int)Position.X, (int)Position.Y, Sprite.Width, Sprite.Height);
+
 
             Vector2 offset = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
             //Check mode then draw
-            spriteBatch.Begin();
-            spriteBatch.Draw(Sprite, Position - offset, Color.White);
-            spriteBatch.End();
+            if (mode < 4)
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(Sprite, Position - offset, Color.White);
+                spriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }
