@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +32,8 @@ namespace pokemon
 
          public override void Update(GameTime gameTime)
         {
+
+            Rectangle boundingbox = new Rectangle((int)Position.X, (int)Position.Y, 64, 64);
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState k = Keyboard.GetState();
 
