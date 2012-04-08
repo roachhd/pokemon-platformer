@@ -12,30 +12,52 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace pokemon
+namespace Pokemon
 {
 
     class hero : Character
     {
+        SpriteFont font;
 
+        int lives;
+        Texture2D livesSprite;
+        Vector2 livesOffset;
 
-        public hero(Game g, Vector2 position) : base(g, position) { }
+        int score;
+
+        public hero(Game g, Vector2 position)
+            : base(g, position)
+        {
+            lives = 5;
+            score = 0;
+        }
         LinkedList<stone> inventory = new LinkedList<stone>();
+
         public void getHit()
         {
-            inventory.RemoveFirst();
             if (getHP() > 0)
             {
+                inventory.RemoveFirst();
                 inventory.First().mode = 2;
                 if (getHP() > 4)
                 {
                     inventory.ElementAt(4).mode = 3; //Set the 4th item to display again
                 }
             }
+            else
+            {
+                lives--;
+                //Play death animation
+                if (lives < 0)
+                {
+                    //Game over. 
+                }
+            }
         }
 
         public void pickUpStone(stone s)
         {
+            score += 50; 
             if (getHP() > 0)
             {
                 inventory.First().mode = 3;
@@ -47,6 +69,7 @@ namespace pokemon
 
             inventory.AddFirst(s);
             s.mode = 2;
+            s.Position = new Vector2(400, 40);
 
             switch (s.type)
                 {
@@ -69,12 +92,33 @@ namespace pokemon
         }
 
 
+        public void drawInventory()
+        {
+            //Inventory
+            for (int x = 1; x < getHP(); x++)
+            {
+                inventory.ElementAt(x).Position = new Vector2(410+(30*x), 40);
+            }
+            
+        }
 
 
 
 
-       
+        protected override void LoadContent()
+        {
+            font = Game.Content.Load<SpriteFont>("myFont");
+            Sprite = Game.Content.Load<Texture2D>("mage");
 
+            Vector2 offset = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
+            Position = Position - offset;
+
+            livesSprite = Game.Content.Load<Texture2D>("lives");
+            livesOffset = new Vector2(livesSprite.Width / 2, livesSprite.Height / 2);
+
+
+            spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+        }
        
         public override void Update(GameTime gameTime)
         {
@@ -146,6 +190,18 @@ namespace pokemon
                         pickUpStone(s);
                     }
                 }
+
+                treasure t = c as treasure;
+
+                if (t != null)
+                {
+                    if (boundingBox.Intersects(t.boundingBox))
+                    {
+                        score += t.points;
+                        t.mode = 0;
+                        Console.WriteLine("Score = " + score);
+                    }
+                }
             }
 
 
@@ -156,6 +212,7 @@ namespace pokemon
 
         public override void Draw(GameTime gameTime)
         {
+            drawInventory();
 
             if (jumping == 1)
             { //jumpSprite(); 
@@ -167,8 +224,17 @@ namespace pokemon
 
             Rectangle rec = walk(gameTime);
             spriteBatch.Begin();
-            //spriteBatch.Draw(Sprite, Position, Color.White);
-            spriteBatch.Draw(Sprite, Position, rec, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            //Draw lives
+            spriteBatch.DrawString(font, "Lives:", new Vector2(10, 5), Color.White);
+            for (int x = 0; x < lives; x++)
+            {
+                spriteBatch.Draw(livesSprite, new Vector2(10+(x*30), 30), Color.White);
+            }
+            //Draw Score
+            spriteBatch.DrawString(font, "Score: "+score, new Vector2(600, 45), Color.White);
+
+            //Draw Hero
+            spriteBatch.Draw(Sprite, Position, rec, typeCol, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             spriteBatch.End();
 
