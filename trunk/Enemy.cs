@@ -39,15 +39,17 @@ namespace pokemon
 
             if (Position.X > mage.Position.X) {
                 Position -= new Vector2(elapsed, 0) * 40;
+                if (walked == 1) { step = -1; }
+                walked = -1;
             }
 
             if (Position.X < mage.Position.X)
             {
                 Position += new Vector2(elapsed, 0) * 40;
+                if (walked == -1) { step = 1; }
+                walked = 1;
             }
 
-
-            walked = 1;
             base.Update(gameTime);
         }
 
@@ -57,11 +59,11 @@ namespace pokemon
          public override void Draw(GameTime gameTime)
         {
             Rectangle rec = base.walk(gameTime);
-            Console.WriteLine(step);
+
             spriteBatch.Begin();
             spriteBatch.Draw(Sprite, Position, rec, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-
             spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }
