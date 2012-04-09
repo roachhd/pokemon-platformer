@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace Pokemon
+namespace pokemon
 {
 
     class hero : Character
@@ -25,17 +25,23 @@ namespace Pokemon
 
         int score;
 
-        public hero(Game g, Vector2 position)
-            : base(g, position)
+        int lastWalk = 1; int attacked = 0;
+
+        Game g;
+
+
+        public hero(Game G, Vector2 position)
+            : base(G, position)
         {
             lives = 5;
             score = 0;
+            g = G;
         }
         LinkedList<stone> inventory = new LinkedList<stone>();
 
         public stone getHit()
         {
-            stone removeMe = null ;
+            stone removeMe = null;
 
             if (getHP() > 0)
             {
@@ -65,7 +71,7 @@ namespace Pokemon
 
         public void pickUpStone(stone s)
         {
-            score += 50; 
+            score += 50;
             if (getHP() > 0)
             {
                 inventory.First().mode = 3;
@@ -80,17 +86,17 @@ namespace Pokemon
             s.Position = new Vector2(400, 40);
 
             switch (s.type)
-                {
-                    case 1:
-                        typeCol = Color.White;
-                        break;
-                    case 2:
-                        typeCol = new Color(255, 196, 196);
-                        break;
-                    default:
-                        typeCol = Color.LightBlue;
-                        break;
-                }
+            {
+                case 1:
+                    typeCol = Color.White;
+                    break;
+                case 2:
+                    typeCol = new Color(255, 196, 196);
+                    break;
+                default:
+                    typeCol = Color.LightBlue;
+                    break;
+            }
         }
 
         public int getHP()
@@ -105,9 +111,9 @@ namespace Pokemon
             //Inventory
             for (int x = 0; x < getHP(); x++)
             {
-                inventory.ElementAt(x).Position = new Vector2(410+(30*x), 40);
+                inventory.ElementAt(x).Position = new Vector2(410 + (30 * x), 40);
             }
-            
+
         }
 
 
@@ -127,11 +133,28 @@ namespace Pokemon
 
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
-       
+
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState k = Keyboard.GetState();
+
+            if (k.IsKeyDown(Keys.Space))
+            {
+                if (inventory.First != null)
+                {
+                    if (attacked == 0)
+                    {
+                        Attack a = new Attack(g, this.Position, inventory.First().type, lastWalk);
+                        Game.Components.Add(a);
+                        attacked = 1;
+                    }
+                }
+            }
+            if (k.IsKeyUp(Keys.Space))
+            {
+                attacked = 0;
+            }
 
             if (k.IsKeyDown(Keys.Up))
             {
@@ -164,6 +187,7 @@ namespace Pokemon
             {
                 Position -= new Vector2(elapsed, 0) * 100;
                 walked = -1;
+                lastWalk = walked;
                 if (step > 0) //if he was walking right or was climbing
                 {
                     step = -1;
@@ -173,6 +197,7 @@ namespace Pokemon
             {
                 Position += new Vector2(elapsed, 0) * 100;
                 walked = 1;
+                lastWalk = walked;
                 if ((step < 0) || (step > 6)) //if he was walking left or was climbing
                 {
                     step = 1;
@@ -183,7 +208,7 @@ namespace Pokemon
             if (jumping == 1) { jump(gameTime); }
 
             IGameComponent removeMe = null;
-            IGameComponent removeMe2 = null; 
+            IGameComponent removeMe2 = null;
             boundingBox = new Rectangle((int)Position.X, (int)Position.Y, 64, 64);
             //Collision Detection (for stones)
             foreach (var c in Game.Components)
@@ -251,10 +276,10 @@ namespace Pokemon
             spriteBatch.DrawString(font, "Lives:", new Vector2(10, 5), Color.White);
             for (int x = 0; x < lives; x++)
             {
-                spriteBatch.Draw(livesSprite, new Vector2(10+(x*30), 30), Color.White);
+                spriteBatch.Draw(livesSprite, new Vector2(10 + (x * 30), 30), Color.White);
             }
             //Draw Score
-            spriteBatch.DrawString(font, "Score: "+score, new Vector2(600, 5), Color.White);
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(600, 5), Color.White);
 
             //Draw Hero
             spriteBatch.Draw(Sprite, Position, rec, typeCol, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
@@ -265,3 +290,4 @@ namespace Pokemon
         }
     }
 }
+
