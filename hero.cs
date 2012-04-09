@@ -33,15 +33,21 @@ namespace Pokemon
         }
         LinkedList<stone> inventory = new LinkedList<stone>();
 
-        public void getHit()
+        public stone getHit()
         {
+            stone removeMe = null ;
+
             if (getHP() > 0)
             {
+                removeMe = inventory.First();
                 inventory.RemoveFirst();
-                inventory.First().mode = 2;
-                if (getHP() > 4)
+                if (getHP() > 0)
                 {
-                    inventory.ElementAt(4).mode = 3; //Set the 4th item to display again
+                    inventory.First().mode = 2;
+                    if (getHP() > 4)
+                    {
+                        inventory.ElementAt(4).mode = 3; //Set the 4th item to display again
+                    }
                 }
             }
             else
@@ -53,6 +59,8 @@ namespace Pokemon
                     //Game over. 
                 }
             }
+
+            return removeMe;
         }
 
         public void pickUpStone(stone s)
@@ -95,7 +103,7 @@ namespace Pokemon
         public void drawInventory()
         {
             //Inventory
-            for (int x = 1; x < getHP(); x++)
+            for (int x = 0; x < getHP(); x++)
             {
                 inventory.ElementAt(x).Position = new Vector2(410+(30*x), 40);
             }
@@ -160,7 +168,6 @@ namespace Pokemon
                 {
                     step = -1;
                 }
-                Console.WriteLine(counter);
             }
             if (k.IsKeyDown(Keys.Right))
             {
@@ -170,13 +177,13 @@ namespace Pokemon
                 {
                     step = 1;
                 }
-                Console.WriteLine(counter);
 
             }
 
             if (jumping == 1) { jump(gameTime); }
 
-
+            IGameComponent removeMe = null;
+            IGameComponent removeMe2 = null; 
             boundingBox = new Rectangle((int)Position.X, (int)Position.Y, 64, 64);
             //Collision Detection (for stones)
             foreach (var c in Game.Components)
@@ -198,13 +205,29 @@ namespace Pokemon
                     if (boundingBox.Intersects(t.boundingBox))
                     {
                         score += t.points;
-                        t.mode = 0;
-                        Console.WriteLine("Score = " + score);
+                        removeMe = t;
+                    }
+                }
+
+                Enemy e = c as Enemy;
+                if (e != null)
+                {
+                    if (boundingBox.Intersects(e.boundingBox))
+                    {
+                        removeMe2 = getHit();
+                        removeMe = e;
                     }
                 }
             }
 
-
+            if (removeMe != null)
+            {
+                Game.Components.Remove(removeMe);
+                if (removeMe2 != null)
+                {
+                    Game.Components.Remove(removeMe2);
+                }
+            }
             base.Update(gameTime);
         }
 
@@ -231,7 +254,7 @@ namespace Pokemon
                 spriteBatch.Draw(livesSprite, new Vector2(10+(x*30), 30), Color.White);
             }
             //Draw Score
-            spriteBatch.DrawString(font, "Score: "+score, new Vector2(600, 45), Color.White);
+            spriteBatch.DrawString(font, "Score: "+score, new Vector2(600, 5), Color.White);
 
             //Draw Hero
             spriteBatch.Draw(Sprite, Position, rec, typeCol, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
