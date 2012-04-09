@@ -33,7 +33,7 @@ namespace pokemon
          public override void Update(GameTime gameTime)
         {
 
-            Rectangle boundingbox = new Rectangle((int)Position.X, (int)Position.Y, 64, 64);
+            Rectangle boundingBox = new Rectangle((int)Position.X, (int)Position.Y, 64, 64);
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState k = Keyboard.GetState();
 
