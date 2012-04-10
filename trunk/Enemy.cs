@@ -10,11 +10,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace pokemon
+namespace Pokemon
 {
     class Enemy : Character
     {
         hero mage;
+        public Rectangle boundingBox { get; set; }
 
         public Enemy(Game g, Vector2 position, hero h) : base(g, position) { Position = position; mage = h; }
 
@@ -30,14 +31,15 @@ namespace pokemon
         }
 
 
-         public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
 
-            Rectangle boundingBox = new Rectangle((int)Position.X, (int)Position.Y, 64, 64);
+            boundingBox = new Rectangle((int)Position.X, (int)Position.Y, 64, 64);
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState k = Keyboard.GetState();
 
-            if (Position.X > mage.Position.X) {
+            if (Position.X > mage.Position.X)
+            {
                 Position -= new Vector2(elapsed, 0) * 40;
                 if (walked == 1) { step = -1; }
                 walked = -1;
@@ -56,7 +58,7 @@ namespace pokemon
 
 
 
-         public override void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
             Rectangle rec = base.walk(gameTime);
 
