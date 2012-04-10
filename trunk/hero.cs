@@ -223,6 +223,29 @@ namespace pokemon
                     }
                 }
 
+                Ground b = c as Ground;
+                if (b != null)
+                {
+                    if (boundingBox.Intersects(s.bb))
+                    {
+                        if ((Position.Y > (s.bb.Top - 39)) && (Position.Y < (s.bb.Bottom - 39))) // if the main player's position is between the top and the bottom of the bounding box
+                        {
+                            //it's a side collision.  check if position is to the left or right, and handle appropriately
+                            if (Position.X < s.position.X) //it's on the left
+                            {
+                                Position = new Vector2(s.bb.Left - boundingBox.Width, Position.Y);
+                            }
+                            else Position = new Vector2(s.bb.Right, Position.Y);
+                        }
+                        else if (Position.Y < s.bb.Top) // if the position of the player is above the top of the box, it's an above collision
+                        {
+                            Position = new Vector2(Position.X, s.bb.Top - boundingBox.Height);
+                        }
+                        else Position = new Vector2(Position.X, s.bb.Bottom); //else it hit the bottom, but this should never happen.
+                    }
+                           
+                    }
+
                 treasure t = c as treasure;
 
                 if (t != null)
