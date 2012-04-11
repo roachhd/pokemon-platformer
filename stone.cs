@@ -18,6 +18,8 @@ namespace pokemon
         Texture2D Sprite;
         SpriteBatch spriteBatch;
         public Rectangle boundingBox { get; set; } 
+	int sprW, sprH;
+	Rectangle rec;
 
         public stone(int t, int m, Game g, Vector2 position):base(g)
         {
@@ -28,18 +30,21 @@ namespace pokemon
 
         protected override void LoadContent()
         {
+		Sprite = Game.Content.Load<Texture2D>("cannons");
+		sprW = Sprite.Width / 3;
+		sprH = Sprite.Height;
             switch (type)
             {
-                case 1:
-                    Sprite = Game.Content.Load<Texture2D>("firestone");
+                case 1: //Fire
+			rec = new Rectangle(sprW*0, sprH*0, sprW, sprH);
                     break;
 
-                case 2:
-                    Sprite = Game.Content.Load<Texture2D>("waterstone");
+                case 2: //Water
+			rec = new Rectangle(sprW*1, sprH*0, sprW, sprH);
                     break;
 
-                case 3:
-                    Sprite = Game.Content.Load<Texture2D>("leafstone");
+                case 3: //Lightning
+                    rec = new Rectangle(sprW*2, sprH*0, sprW, sprH);
                     break;
             }
             
@@ -55,12 +60,12 @@ namespace pokemon
             boundingBox = new Rectangle((int)Position.X, (int)Position.Y, Sprite.Width, Sprite.Height);
 
 
-            Vector2 offset = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
+            Vector2 offset = new Vector2(sprW / 2, sprH / 2);
             //Check mode then draw
             if (mode < 4)
             {
                 spriteBatch.Begin();
-                spriteBatch.Draw(Sprite, Position - offset, Color.White);
+                spriteBatch.Draw(Sprite, Position - offset, rec, Color.White);
                 spriteBatch.End();
             }
 
