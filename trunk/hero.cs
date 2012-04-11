@@ -156,32 +156,7 @@ namespace Pokemon
                 attacked = 0;
             }
 
-            if (k.IsKeyDown(Keys.Up))
-            {
-                if (ladder > 0) // if he's going up a ladder
-                {
-                    if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
-                        step = 6;
-                    Position -= new Vector2(0, elapsed) * 80;
-                    climbed = 1;
-                }
-                else
-                { //if he's jumping
-                    jumping = 1;
-                }
-            }
-
-            if (k.IsKeyDown(Keys.Down))
-            {
-                if (ladder > 0) // if he's going down a ladder
-                {
-                    if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
-                        step = 6;
-                    Position += new Vector2(0, elapsed) * 80;
-                    climbed = 1;
-                }
-
-            }
+            
 
             if (k.IsKeyDown(Keys.Left))
             {
@@ -242,6 +217,23 @@ namespace Pokemon
                             Position = new Vector2(Position.X, b.bb.Top - boundingBox.Height);
                         }
                         else Position = new Vector2(Position.X, b.bb.Bottom); //else it hit the bottom, but this should never happen.
+                    }
+                    if (boundingBox.Contains(b.bb) || (boundingBox.Intersects(b.bb)) && (b.type == 4))
+                    {
+                        if (k.IsKeyDown(Keys.Up))
+                        {
+                            if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
+                                step = 6;
+                            Position -= new Vector2(0, elapsed) * 80;
+                            climbed = 1;
+                        }
+                        if (k.IsKeyDown(Keys.Down))
+                        {
+                            if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
+                                step = 6;
+                            Position += new Vector2(0, elapsed) * 80;
+                            climbed = 1;
+                        }
                     }
 
                 }
