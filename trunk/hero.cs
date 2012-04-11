@@ -201,7 +201,7 @@ namespace Pokemon
                 Ground b = c as Ground;
                 if (b != null)
                 {
-                    if (boundingBox.Intersects(b.bb))
+                     if (boundingBox.Intersects(b.bb) && ((b.type == 1) || (b.type == 2) ||(b.type == 3)))
                     {
                         if ((Position.Y > (b.bb.Top - 39)) && (Position.Y < (b.bb.Bottom - 39))) // if the main player's position is between the top and the bottom of the bounding box
                         {
@@ -234,9 +234,7 @@ namespace Pokemon
                             Position += new Vector2(0, elapsed) * 80;
                             climbed = 1;
                         }
-                    }
-
-                }
+                    }                }
 
                 treasure t = c as treasure;
 
