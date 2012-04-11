@@ -214,10 +214,11 @@ namespace Pokemon
                         }
                         else if (Position.Y < b.bb.Top) // if the position of the player is above the top of the box, it's an above collision
                         {
-                            Position = new Vector2(Position.X, b.bb.Top - boundingBox.Height);
+                            Position = new Vector2(Position.X, b.bb.Top - boundingBox.Height+1);
                         }
                         else Position = new Vector2(Position.X, b.bb.Bottom); //else it hit the bottom, but this should never happen.
                     }
+                    
                     if (boundingBox.Contains(b.bb) || (boundingBox.Intersects(b.bb)) && (b.type == 4))
                     {
                         if (k.IsKeyDown(Keys.Up))
@@ -234,6 +235,12 @@ namespace Pokemon
                             Position += new Vector2(0, elapsed) * 80;
                             climbed = 1;
                         }
+                    }
+                    if (boundingBox.Intersects(b.bb) && (b.type == 0) && (b.position.Y > (Position.Y - 64))) 
+                    {
+                        Position += new Vector2(0, elapsed) * 80;
+                        
+                    }
                     }                }
 
                 treasure t = c as treasure;
