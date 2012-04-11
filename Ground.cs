@@ -17,12 +17,21 @@ namespace Pokemon
         {
             get
             {
+                if (type == 4)
+                {
+                    return new Rectangle(
+                        (int)position.X - sprite.Width / 2,
+                        (int)position.Y - sprite.Height,
+                        sprite.Width,
+                        sprite.Height + 25);
+                }
+                else 
                 return new Rectangle(
-                (int)position.X - sprite.Width/2,
-                (int)position.Y - sprite.Height/2,
+                (int)position.X - sprite.Width / 2,
+                (int)position.Y - sprite.Height / 2,
                 sprite.Width,
                 sprite.Height);
-                
+
 
             }
         }
@@ -56,16 +65,19 @@ namespace Pokemon
             switch (type)
             {
                 case 0:
-                    sprite = Game.Content.Load<Texture2D>("grass");
+                    sprite = Game.Content.Load<Texture2D>("grass"); //air
                     break;
                 case 1:
-                    sprite = Game.Content.Load<Texture2D>("grass");
+                    sprite = Game.Content.Load<Texture2D>("grass");  //regular
                     break;
                 case 2:
-                    sprite = Game.Content.Load<Texture2D>("ground test");
+                    sprite = Game.Content.Load<Texture2D>("ground test"); //goo
                     break;
                 case 3:
-                    sprite = Game.Content.Load<Texture2D>("withit");
+                    sprite = Game.Content.Load<Texture2D>("withit"); //ice
+                    break;
+                case 4:
+                    sprite = Game.Content.Load<Texture2D>("test"); //ladder
                     break;
 
             }
