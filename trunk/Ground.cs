@@ -18,11 +18,11 @@ namespace Pokemon
             get
             {
                 return new Rectangle(
-                (int)position.X,
-                (int)position.Y,
+                (int)position.X - sprite.Width/2,
+                (int)position.Y - sprite.Height/2,
                 sprite.Width,
                 sprite.Height);
-
+                
 
             }
         }
@@ -39,26 +39,27 @@ namespace Pokemon
         {
             if (this.type == 0) return;
             if (sprite == null) return;
-                    Vector2 offset = new Vector2(sprite.Width / 2, sprite.Height / 2);
+            Vector2 offset = new Vector2(sprite.Width / 2, sprite.Height / 2);
 
-                    spritebatch.Begin();
-                    spritebatch.Draw(sprite,
-                    position - offset,
-                    Color.White);
-                    spritebatch.End();
-              
+            spritebatch.Begin();
+            spritebatch.Draw(sprite,
+            position - offset,
+            Color.White);
+            spritebatch.End();
+
         }
 
 
 
         protected override void LoadContent()
         {
-            switch(type){
+            switch (type)
+            {
                 case 0:
-                    sprite = Game.Content.Load<Texture2D>("test");
+                    sprite = Game.Content.Load<Texture2D>("grass");
                     break;
                 case 1:
-                    sprite = Game.Content.Load<Texture2D>("test");
+                    sprite = Game.Content.Load<Texture2D>("grass");
                     break;
                 case 2:
                     sprite = Game.Content.Load<Texture2D>("ground test");
