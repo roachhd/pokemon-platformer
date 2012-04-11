@@ -57,7 +57,7 @@ namespace pokemon
         {
             //Set bounding box for collision detection
             //Possibly throw this into update, but then again, stones don't move...
-            boundingBox = new Rectangle((int)Position.X, (int)Position.Y, Sprite.Width, Sprite.Height);
+            boundingBox = new Rectangle((int)Position.X, (int)Position.Y, sprW, sprH);
 
 
             Vector2 offset = new Vector2(sprW / 2, sprH / 2);
