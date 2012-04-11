@@ -28,11 +28,6 @@ namespace Pokemon
             points = p;
             Position = position;
             mode = 1;
-
-		sprW = Sprite.Width / 14;
-		sprH = Sprite.Height / 2;
-		if (t > 27 || t < 0) {t = 24;}
-		rec = new Rectangle(sprW*(t%14), sprH*((int)(t/14)), sprW, sprH);
         }
 
         protected override void LoadContent()
@@ -42,8 +37,8 @@ namespace Pokemon
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
 		sprW = Sprite.Width / 14;
 		sprH = Sprite.Height / 2;
-		if (t > 27 || t < 0) {t = 24;}
-		rec = new Rectangle(sprW*(t%14), sprH*((int)(t/14)), sprW, sprH);
+		if (type > 27 || type < 0) {type = 24;}
+		rec = new Rectangle(sprW*(type%14), sprH*((int)(type/14)), sprW, sprH);
         }
 
         public override void Draw(GameTime gameTime)
