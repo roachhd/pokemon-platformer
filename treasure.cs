@@ -31,7 +31,7 @@ namespace Pokemon
 
 		sprW = Sprite.Width / 14;
 		sprH = Sprite.Height / 2;
-		if (t > 27 || t < 0) {t = 24}
+		if (t > 27 || t < 0) {t = 24;}
 		rec = new Rectangle(sprW*(t%14), sprH*((int)(t/14)), sprW, sprH);
         }
 
@@ -40,6 +40,10 @@ namespace Pokemon
             Sprite = Game.Content.Load<Texture2D>("food");
             
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+		sprW = Sprite.Width / 14;
+		sprH = Sprite.Height / 2;
+		if (t > 27 || t < 0) {t = 24;}
+		rec = new Rectangle(sprW*(t%14), sprH*((int)(t/14)), sprW, sprH);
         }
 
         public override void Draw(GameTime gameTime)
