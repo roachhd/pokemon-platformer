@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Pokemon
+namespace pokemon
 {
     class Character : DrawableGameComponent
     {
@@ -28,7 +28,7 @@ namespace Pokemon
         protected SpriteBatch spriteBatch;
 
         protected Color typeCol = Color.White;
-        
+
 
         public Character(Game g, Vector2 position) : base(g) { Position = position; }
 
@@ -88,38 +88,43 @@ namespace Pokemon
             }
 
             //walking steps
-            if (step == 1) rec = new Rectangle(0, 0, 64, 64);
-            else if (step == 2) rec = new Rectangle(64, 0, 64, 64);
-            else if (step == 3) rec = new Rectangle(128, 0, 64, 64);
-            else if (step == 4) rec = new Rectangle(64, 0, 64, 64);
-            else if (step == -1) rec = new Rectangle(0, 64, 64, 64);
-            else if (step == -2) rec = new Rectangle(64, 64, 64, 64);
-            else if (step == -3) rec = new Rectangle(128, 64, 64, 64);
-            else if (step == -4) rec = new Rectangle(64, 64, 64, 64);
+            if (step == 1) rec = new Rectangle(0, 0, sprwid, sprhei);
+            else if (step == 2) rec = new Rectangle(sprwid, 0, sprwid, sprhei);
+            else if (step == 3) rec = new Rectangle(sprwid*2, 0, sprwid, sprhei);
+            else if (step == 4) rec = new Rectangle(sprwid, 0, sprwid, sprhei); //second again
+            else if (step == -1) rec = new Rectangle(0, sprhei, sprwid, sprhei);
+            else if (step == -2) rec = new Rectangle(sprwid, sprhei, sprwid, sprhei);
+            else if (step == -3) rec = new Rectangle(sprwid * 2, sprhei, sprwid, sprhei);
+            else if (step == -4) rec = new Rectangle(sprwid, sprhei, sprwid, sprhei);
             //climbing steps
-            else if (step == 6) rec = new Rectangle(0, 128, 64, 64);
-            else if (step == 7) rec = new Rectangle(64, 128, 64, 64);
-            else if (step == 8) rec = new Rectangle(128, 128, 64, 64);
-            else rec = new Rectangle(64, 128, 64, 64);
+            else if (step == 6) rec = new Rectangle(0, sprhei * 2, sprwid, sprhei);
+            else if (step == 7) rec = new Rectangle(sprwid, sprhei * 2, sprwid, sprhei);
+            else if (step == 8) rec = new Rectangle(sprwid * 2, sprhei * 2, sprwid, sprhei);
+            else rec = new Rectangle(sprwid, sprhei * 2, sprwid, sprhei);
+
+            //death sprite
+            if (step == 10) rec = new Rectangle(sprwid*2, sprhei * 2, sprwid, sprhei);
 
             return rec;
         }
 
         protected int jumping;
 
+        int sprwid = 50, sprhei = 50;
+
         protected override void LoadContent()
         {
 
             Sprite = Game.Content.Load<Texture2D>("mage");
 
-            Vector2 offset = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
+            Vector2 offset = new Vector2(sprwid / 2, sprhei / 2);
             Position = Position - offset;
 
 
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
-        
-       
+
+
 
 
 
