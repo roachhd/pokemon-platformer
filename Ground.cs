@@ -25,12 +25,12 @@ namespace Pokemon
                         sprite.Width,
                         sprite.Height + 25);
                 }
-                else 
-                return new Rectangle(
-                (int)position.X - sprite.Width / 2,
-                (int)position.Y - sprite.Height / 2,
-                sprite.Width,
-                sprite.Height);
+                else
+                    return new Rectangle(
+                    (int)position.X - sprite.Width / 2,
+                    (int)position.Y - sprite.Height / 2,
+                    sprite.Width,
+                    sprite.Height);
 
 
             }
@@ -77,7 +77,7 @@ namespace Pokemon
                     sprite = Game.Content.Load<Texture2D>("withit"); //ice
                     break;
                 case 4:
-                    sprite = Game.Content.Load<Texture2D>("test"); //ladder
+                    sprite = Game.Content.Load<Texture2D>("ladder"); //ladder
                     break;
 
             }
