@@ -20,14 +20,27 @@ namespace pokemon
         public Rectangle boundingBox { get; set; }
         int Type;
         int life;
+        
 
         //1-red,2-blue,3-yellow
         public Enemy(Game g, Vector2 position, hero h, int t, int l) : base(g, position) { Position = position; mage = h; Type = t; life = l; }
 
         protected override void LoadContent()
         {
+            if (Type == 1)
+            {
+                Sprite = Game.Content.Load<Texture2D>("enemyred");
 
-            Sprite = Game.Content.Load<Texture2D>("enemy");
+            }
+            else if (Type == 2)
+            {
+                Sprite = Game.Content.Load<Texture2D>("enemyblue");
+            }
+            else
+            {
+                Sprite = Game.Content.Load<Texture2D>("enemyyellow");
+            }
+            
 
             Vector2 offset = new Vector2(sprwid / 2, sprhei / 2);
             Position = Position - offset;
@@ -35,23 +48,23 @@ namespace pokemon
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
 
-        float calculateDamage(int tattack,int tdefense) {
+        int calculateDamage(int tattack,int tdefense) {
 
             if (tattack == 1) { //red
-                if (tdefense == 1) { return 0.5f; }
-                else if (tdefense == 2) { return 0.25f; } //blue
-                else { return 1; }
+                if (tdefense == 1) { return 50; }
+                else if (tdefense == 2) { return 25; } //blue
+                else { return 100; }
             }
             else if (tattack == 2)
             { //blue
-                if (tdefense == 1) { return 1; }
-                else if (tdefense == 2) { return 0.5f; } //blue
-                else { return 0.25f; }
+                if (tdefense == 1) { return 100; }
+                else if (tdefense == 2) { return 50; } //blue
+                else { return 25; }
             }
             else {
-                if (tdefense == 1) { return 0.25f; }
-                else if (tdefense == 2) { return 1; } //blue
-                else { return 0.50f; }
+                if (tdefense == 1) { return 25; }
+                else if (tdefense == 2) { return 100; } //blue
+                else { return 50; }
             }
         }
 
@@ -77,8 +90,8 @@ namespace pokemon
                     {
                         if (boundingBox.Intersects(a.boundingBox))
                         {
-                            //100 is the attack power. calculateDamage returns a percent that is multiplied to see how eficient was the attack. We could change this in the future
-                            life -= (int)(100 * calculateDamage(mage.inventory.First().type, this.Type));
+                            life -= calculateDamage(mage.inventory.First().type, this.Type);
+                            Console.WriteLine("monster life: " + life);
                             at = (Attack)c;
                             if (life <= 0)
                             {
@@ -96,7 +109,7 @@ namespace pokemon
                     {
                         if (boundingBox.Intersects(b.bb) && ((b.type == 1) || (b.type == 2) || (b.type == 3)))
                         {
-                            if ((Position.Y > (b.bb.Top - 39)) && (Position.Y < (b.bb.Bottom - 39))) // if the main player's position is between the top and the bottom of the bounding box
+                            if ((Position.Y > (b.bb.Top - 30)) && (Position.Y < (b.bb.Bottom - 30))) // if the main player's position is between the top and the bottom of the bounding box
                             {
                                 //it's a side collision.  check if position is to the left or right, and handle appropriately
                                 if (Position.X < b.position.X) //it's on the left
@@ -129,7 +142,7 @@ namespace pokemon
                                 climbed = 1;
                             }
                         }*/
-                        if (boundingBox.Intersects(b.bb) && (b.type == 0) && (b.position.Y > (Position.Y - 64)))
+                        if (boundingBox.Intersects(b.bb) && (b.type == 0) && (b.position.Y > (Position.Y - 50)))
                         {
                             Position += new Vector2(0, elapsed) * 80;
 
