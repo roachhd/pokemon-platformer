@@ -37,7 +37,7 @@ namespace Pokemon
             score = 0;
             g = G;
         }
-        LinkedList<stone> inventory = new LinkedList<stone>();
+        public LinkedList<stone> inventory = new LinkedList<stone>();
 
         public stone getHit()
         {
@@ -184,7 +184,7 @@ namespace Pokemon
 
             IGameComponent removeMe = null;
             IGameComponent removeMe2 = null;
-            boundingBox = new Rectangle((int)Position.X, (int)Position.Y, 64, 64);
+            boundingBox = new Rectangle((int)Position.X, (int)Position.Y, 50, 50);
             //Collision Detection (for stones)
             foreach (var c in Game.Components)
             {
@@ -199,6 +199,7 @@ namespace Pokemon
                 }
 
                 Ground b = c as Ground;
+                //put this in the enemy class
                 if (b != null)
                 {
                      if (boundingBox.Intersects(b.bb) && ((b.type == 1) || (b.type == 2) ||(b.type == 3)))
@@ -241,7 +242,7 @@ namespace Pokemon
                         Position += new Vector2(0, elapsed) * 80;
                         
                     }
-                    }                }
+                    }                
 
                 treasure t = c as treasure;
 
