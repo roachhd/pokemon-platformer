@@ -1,11 +1,5 @@
 #summary Instructions on how to play the game
 
-= Introduction =
-
-
-
-= Details =
-
 :::Controls:::
 
 You can move the character by pressing ← and →, and jump by pressing ↑. You can climb ladders by pressing ↑ and ↓. You can cast spells by pressing 'space'.
