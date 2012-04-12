@@ -10,11 +10,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Pokemon
+namespace pokemon
 {
     class Enemy : Character
     {
-        int sprwid=64, sprhei=64;
+        int sprwid=50, sprhei=50;
 
         hero mage;
         public Rectangle boundingBox { get; set; }
