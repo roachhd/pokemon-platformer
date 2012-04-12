@@ -7,11 +7,11 @@ You can move the character by pressing ← and →, and jump by pressing ↑. Yo
 
 :::How it works:::
 
-In this game you have to collect canons to get elemental powers, and use them to kill the enemies. There are 3 types of power: fire (red), water (blue) and electric (yellow). Every time you touch a canon, it will be collected and placed on your inventory, and will become the currently active power. If you touch another canon, your current power will be replaced with the type of the canon you just collected. Your inventory works as a stack. Every new canon will be placed at the top of the stack, and every time you get hit by an enemy, it will pop the stack and you will lose the power that was active. The next power on the stack will become active then. If you get hit with an empty inventory, you lose one life. The game is over if you lose all your lives.
+In this game you have to collect canons to get elemental powers, and use them to kill the enemies. There are 3 types of power: fire (red), water (blue) and electric (yellow). Every time you touch a cannon, it will be collected and placed on your inventory, and will become the currently active power. If you touch another canon, your current power will be replaced with the type of the cannon you just collected. Your inventory works as a stack. Every new cannon will be placed at the top of the stack, and every time you get hit by an enemy, it will pop the stack and you will lose the power that was active. The next power on the stack will become active then. If you get hit with an empty inventory, you lose one life. The game is over if you lose all your lives.
 
 :::Fighting:::
 
-If the character touches a monster, it's going to be hit and the power stack will pop a canon. If the character gets hit with an empty inventory, it loses one life.
+If the character touches a monster, it's going to be hit and the power stack will pop a cannon. If the character gets hit with an empty inventory, it loses one life.
 There are 3 types of powers, meaning that there are 3 types of enemies and 3 types of player spell. Each type has strengths and weaknesses:
 
 Fire: strong against Electric, weak against Water
