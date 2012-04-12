@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace pokemon
+namespace Pokemon
 {
     class Enemy : Character
     {
@@ -84,24 +84,26 @@ namespace pokemon
 
                 foreach (var c in Game.Components)
                 {
-                    Attack a = c as Attack;
-                    //put this in the enemy class
-                    if (a != null)
+                    if (mage != null)
                     {
-                        if (boundingBox.Intersects(a.boundingBox))
+                        Attack a = c as Attack;
+                        //put this in the enemy class
+                        if (a != null)
                         {
-                            life -= calculateDamage(mage.inventory.First().type, this.Type);
-                            Console.WriteLine("monster life: " + life);
-                            at = (Attack)c;
-                            if (life <= 0)
+                            if (boundingBox.Intersects(a.boundingBox))
                             {
+                                life -= calculateDamage(mage.giveInventory().First().type, this.Type);
+                                Console.WriteLine("monster life: " + life);
+                                at = (Attack) c;
+                                if (life <= 0)
+                                {
 
-                                at = (Attack)c;
-                                died = 1;
+                                    at = (Attack) c;
+                                    died = 1;
+                                }
                             }
                         }
                     }
-
 
                     Ground b = c as Ground;
                     //put this in the enemy class
@@ -109,7 +111,8 @@ namespace pokemon
                     {
                         if (boundingBox.Intersects(b.bb) && ((b.type == 1) || (b.type == 2) || (b.type == 3)))
                         {
-                            if ((Position.Y > (b.bb.Top - 30)) && (Position.Y < (b.bb.Bottom - 30))) // if the main player's position is between the top and the bottom of the bounding box
+                            if ((Position.Y > (b.bb.Top - 30)) && (Position.Y < (b.bb.Bottom - 30)))
+                                // if the main player's position is between the top and the bottom of the bounding box
                             {
                                 //it's a side collision.  check if position is to the left or right, and handle appropriately
                                 if (Position.X < b.position.X) //it's on the left
@@ -118,11 +121,14 @@ namespace pokemon
                                 }
                                 else Position = new Vector2(b.bb.Right, Position.Y);
                             }
-                            else if (Position.Y < b.bb.Top) // if the position of the player is above the top of the box, it's an above collision
+                            else if (Position.Y < b.bb.Top)
+                                // if the position of the player is above the top of the box, it's an above collision
                             {
                                 Position = new Vector2(Position.X, b.bb.Top - boundingBox.Height + 1);
                             }
-                            else Position = new Vector2(Position.X, b.bb.Bottom); //else it hit the bottom, but this should never happen.
+                            else
+                                Position = new Vector2(Position.X, b.bb.Bottom);
+                            //else it hit the bottom, but this should never happen.
                         }
                         //ladders
                         /*if (boundingBox.Contains(b.bb) || (boundingBox.Intersects(b.bb)) && (b.type == 4))
@@ -144,53 +150,66 @@ namespace pokemon
                         }*/
                         if (boundingBox.Intersects(b.bb) && (b.type == 0) && (b.position.Y > (Position.Y - 50)))
                         {
-                            Position += new Vector2(0, elapsed) * 80;
+                            Position += new Vector2(0, elapsed)*80;
 
                         }
                     }
 
                 }
 
-
-                if (Position.X > mage.Position.X)
+                if (mage != null)
                 {
-                    Position -= new Vector2(elapsed, 0) * 40;
-                    if (walked == 1) { step = -1; }
-                    walked = -1;
-                }
-
-                if (Position.X < mage.Position.X)
-                {
-                    Position += new Vector2(elapsed, 0) * 40;
-                    if (walked == -1) { step = 1; }
-                    walked = 1;
-                }
-            }
-            else {
-
-                
-
-            //animacao de quando morreu
-                if (dying < 60) {
-                    if (dying % 15 == 0) {
-                        //aqui troca o frame da animacao do monstro morrendo!!!
+                    if (Position.X > mage.Position.X)
+                    {
+                        Position -= new Vector2(elapsed, 0)*40;
+                        if (walked == 1)
+                        {
+                            step = -1;
+                        }
+                        walked = -1;
                     }
 
-                    dying++;
-                } 
-                else {
-                    Game.Components.Remove(this);
+                    if (Position.X < mage.Position.X)
+                    {
+                        Position += new Vector2(elapsed, 0)*40;
+                        if (walked == -1)
+                        {
+                            step = 1;
+                        }
+                        walked = 1;
+                    }
+                }
+            }
+            else
+                {
+
+
+
+                    //animacao de quando morreu
+                    if (dying < 60)
+                    {
+                        if (dying % 15 == 0)
+                        {
+                            //aqui troca o frame da animacao do monstro morrendo!!!
+                        }
+
+                        dying++;
+                    }
+                    else
+                    {
+                        Game.Components.Remove(this);
+                    }
+
+
                 }
                 
-            
-            }
-
+  
             if (at != null)
-            {
-                Game.Components.Remove((IGameComponent)at);
-                
-            }
+                {
+                    Game.Components.Remove((IGameComponent) at);
 
+                }
+            
             base.Update(gameTime);
         }
 
