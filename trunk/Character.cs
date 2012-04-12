@@ -10,10 +10,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace pokemon
+namespace Pokemon
 {
     class Character : DrawableGameComponent
     {
+        protected Rectangle boundingBox;
         protected int step = 1;
         protected int walked = 0, climbed = 0;
         protected int counter = 0;
@@ -116,16 +117,13 @@ namespace pokemon
         {
 
             Sprite = Game.Content.Load<Texture2D>("mage");
-
+            sprwid = 50; sprhei = 50;
             Vector2 offset = new Vector2(sprwid / 2, sprhei / 2);
             Position = Position - offset;
 
 
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
-
-
-
 
 
 
