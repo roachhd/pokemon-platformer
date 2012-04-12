@@ -26,7 +26,7 @@ namespace Pokemon
         int score;
 
         int lastWalk = 1; int attacked = 0;
-
+        Rectangle boundingBox;
         Game g;
 
 
@@ -37,7 +37,12 @@ namespace Pokemon
             score = 0;
             g = G;
         }
-        public LinkedList<stone> inventory = new LinkedList<stone>();
+        LinkedList<stone> inventory = new LinkedList<stone>();
+
+        public LinkedList<stone> giveInventory()
+        {
+            return inventory;
+        }
 
         public stone getHit()
         {
@@ -199,12 +204,12 @@ namespace Pokemon
                 }
 
                 Ground b = c as Ground;
-                //put this in the enemy class
                 if (b != null)
                 {
-                     if (boundingBox.Intersects(b.bb) && ((b.type == 1) || (b.type == 2) ||(b.type == 3)))
+                    if (boundingBox.Intersects(b.bb) && ((b.type == 1) || (b.type == 2) || (b.type == 3)))
                     {
-                        if ((Position.Y > (b.bb.Top - 39)) && (Position.Y < (b.bb.Bottom - 39))) // if the main player's position is between the top and the bottom of the bounding box
+                        if ((Position.Y > (b.bb.Top - 39)) && (Position.Y < (b.bb.Bottom - 39)))
+                            // if the main player's position is between the top and the bottom of the bounding box
                         {
                             //it's a side collision.  check if position is to the left or right, and handle appropriately
                             if (Position.X < b.position.X) //it's on the left
@@ -213,36 +218,39 @@ namespace Pokemon
                             }
                             else Position = new Vector2(b.bb.Right, Position.Y);
                         }
-                        else if (Position.Y < b.bb.Top) // if the position of the player is above the top of the box, it's an above collision
+                        else if (Position.Y < b.bb.Top)
+                            // if the position of the player is above the top of the box, it's an above collision
                         {
-                            Position = new Vector2(Position.X, b.bb.Top - boundingBox.Height+1);
+                            Position = new Vector2(Position.X, b.bb.Top - boundingBox.Height + 1);
                         }
-                        else Position = new Vector2(Position.X, b.bb.Bottom); //else it hit the bottom, but this should never happen.
+                        else
+                            Position = new Vector2(Position.X, b.bb.Bottom);
+                                //else it hit the bottom, but this should never happen.
                     }
-                    
-                    if (boundingBox.Contains(b.bb) || (boundingBox.Intersects(b.bb)) && (b.type == 4))
+
+                    if ((boundingBox.Contains(b.bb) || (boundingBox.Intersects(b.bb))) && (b.type == 4))
                     {
                         if (k.IsKeyDown(Keys.Up))
                         {
                             if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
                                 step = 6;
-                            Position -= new Vector2(0, elapsed) * 80;
+                            Position -= new Vector2(0, elapsed)*160;
                             climbed = 1;
                         }
                         if (k.IsKeyDown(Keys.Down))
                         {
                             if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
                                 step = 6;
-                            Position += new Vector2(0, elapsed) * 80;
+                            Position += new Vector2(0, elapsed)*80;
                             climbed = 1;
                         }
                     }
-                    if (boundingBox.Intersects(b.bb) && (b.type == 0) && (b.position.Y > (Position.Y - 64))) 
+                    if (boundingBox.Intersects(b.bb) && (b.type == 0) && (b.position.Y > (Position.Y - 64)))
                     {
-                        Position += new Vector2(0, elapsed) * 80;
-                        
+                        Position += new Vector2(0, elapsed)*80;
+
                     }
-                    }                
+                }
 
                 treasure t = c as treasure;
 
@@ -266,6 +274,7 @@ namespace Pokemon
                 }
             }
 
+
             if (removeMe != null)
             {
                 Game.Components.Remove(removeMe);
@@ -277,19 +286,19 @@ namespace Pokemon
             base.Update(gameTime);
         }
 
-        Rectangle boundingBox;
+
 
         public override void Draw(GameTime gameTime)
         {
             drawInventory();
 
-            if (jumping == 1)
+            /*if (jumping == 1)
             { //jumpSprite(); 
             }
             else
             {
                 // Rectangle rec = walk(gameTime);
-            }
+            }*/
 
             Rectangle rec = walk(gameTime);
             spriteBatch.Begin();
