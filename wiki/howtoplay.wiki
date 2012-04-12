@@ -1,6 +1,7 @@
 NOTE: We know about several very large bugs in our alpha test already, particularly:
 1. That near the edges of the screen your character will inexplicably disappear
 2. Only one enemy is currently active/moving/attacking, and that enemy is the only one that can be killed with a ranged attack.
+3: There is an inventory at the top, but you can go up there and touch the cannons and they will move along the screen. 
 
 We ask that, if possible, you tell us about bugs you have found in addition to the ones mentioned above. Thanks!
 
