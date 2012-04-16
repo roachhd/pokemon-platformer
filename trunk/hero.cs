@@ -235,6 +235,9 @@ namespace Pokemon
                         //else it hit the bottom, but this should never happen.
                     }
 
+                    if (boundingBox.Left < 25) Position = new Vector2(25, Position.Y);
+                    if (boundingBox.Right >= 775) Position = new Vector2(725, Position.Y);
+                    //if (boundingBox.Top < 40) Position = new Vector2(Position.X, 40 + boundingBox.Height / 2);
                     if ((boundingBox.Contains(b.bb) || (boundingBox.Intersects(b.bb))) && (b.type == 4))
                     //    if (boundingBox.Contains(b.bb) && (b.type == 4))
                     {
