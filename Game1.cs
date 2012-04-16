@@ -24,12 +24,12 @@ namespace Pokemon
         public static Vector2[] TheMatrix;
         DrawableGameComponent[] myWorld = new DrawableGameComponent[768];
         public static int[] level;
-       private Texture2D background;
+        private Texture2D background;
         private hero player;
         private bool playerInit = false;
         Random random = new Random();
         //public static Layer[] layers;
-        
+
 
         private enum StartMenu
         {
@@ -74,7 +74,7 @@ namespace Pokemon
 
         public int[] LevelRead()
         {
-            StreamReader myFile = new StreamReader("level1.txt");
+            StreamReader myFile = new StreamReader("level3.txt");
             level = new int[768];
             int counter = 0;
             string line;
@@ -110,13 +110,14 @@ namespace Pokemon
             // TODO: Add your initialization logic here
             TheMatrix = MatrixInit();
             level = LevelRead();
+            player = new hero(this, new Vector2(525, 525), new Vector2(525, 525));
             for (int i = 0; i < TheMatrix.Length; i++)
             {
                 switch (level[i])
                 {
                     case 0: // Sky
                         Components.Add(
-                            myWorld[i] = new Ground(this, TheMatrix[i], level[i]) 
+                            myWorld[i] = new Ground(this, TheMatrix[i], level[i])
                             );
                         break;
                     case 1: // Ground
@@ -125,33 +126,33 @@ namespace Pokemon
                             );
                         break;
                     case 2: // Player
-                        player = new hero(this, TheMatrix[i]);
+                        
                         Components.Add(myWorld[i] = player);
                         break;
                     case 3: // Enemy
-                        Components.Add(myWorld[i] = new Enemy(this, TheMatrix[i], player, random.Next(0,3), 100));
+                        Components.Add(myWorld[i] = new Enemy(this, TheMatrix[i], player, random.Next(0, 3), 100));
                         break;
                     case 4: // Ladder
                         Components.Add(myWorld[i] = new Ground(this, TheMatrix[i], level[i]));
                         break;
-          
+
                     case 5: //Red Stone
                         Components.Add(myWorld[i] = new stone(1, 1, this, TheMatrix[i]));
                         break;
-                        
+
                     case 6: // Blue Stone
                         Components.Add(myWorld[i] = new stone(2, 1, this, TheMatrix[i]));
                         break;
-                        
+
                     case 7: // Yellow Stone
                         Components.Add(myWorld[i] = new stone(3, 1, this, TheMatrix[i]));
                         break;
-                        
+
                     case 8: // Treasure/Food
                         Components.Add(myWorld[i] = new treasure(1, random.Next(0, 27), this, TheMatrix[i]));
                         break;
-                } 
-                
+                }
+
             }
             base.Initialize();
         }
@@ -161,10 +162,10 @@ namespace Pokemon
         /// all of your content.
         /// </summary>
         protected override void LoadContent()
-        {   
+        {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            menuFont = Content.Load<SpriteFont>("MenuFont");
+            menuFont = Content.Load<SpriteFont>("myfont");
             background = Content.Load<Texture2D>("backgroundjungle"); //Eventually we need some nice pixel art here.
             // TODO: use this.Content to load your game content here
         }
@@ -215,7 +216,7 @@ namespace Pokemon
                 /*if (Screen == GameState.InGame)
                     Screen = GameState.PauseMenu;
                 else if (Screen == GameState.Start)*/
-                    this.Exit();
+                this.Exit();
             }
             // TODO: Add your update logic here
 
@@ -234,7 +235,7 @@ namespace Pokemon
                     GraphicsDevice.Clear(Color.White);
                     spriteBatch.Begin();
                     const string title = "POKEMON RIPOFF!!!!"; // Insert mind-blowingly awesome game title here.
-                    const string descript = "Press Enter to start a new game, H to view high scores, or ESC to quit.";
+                    const string descript = "Press Enter to start a new game, H to view high scores, or ESC to quit. ";
 
                     spriteBatch.DrawString(menuFont, title,
                         new Vector2((Window.ClientBounds.Width / 2)
@@ -252,7 +253,7 @@ namespace Pokemon
                     spriteBatch.End();
                     break;
 
-                    case GameState.InGame:
+                case GameState.InGame:
                     GraphicsDevice.Clear(Color.White);
                     spriteBatch.Begin();
                     spriteBatch.Draw(background,
@@ -263,7 +264,7 @@ namespace Pokemon
                     spriteBatch.End();
                     base.Draw(gameTime);
                     break;
-                    // Enter lots of fun code stuff here.
+                // Enter lots of fun code stuff here.
             }
             //GraphicsDevice.Clear(Color.White);
 
