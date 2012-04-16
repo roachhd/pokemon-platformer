@@ -22,6 +22,7 @@ namespace Pokemon
         int lives;
         Texture2D livesSprite;
         Vector2 livesOffset;
+        Vector2 start;
 
         int score;
 
@@ -36,9 +37,10 @@ namespace Pokemon
         Game g;
 
 
-        public hero(Game G, Vector2 position)
+        public hero(Game G, Vector2 position, Vector2 st)
             : base(G, position)
         {
+            start = st;
             lives = 5;
             score = 0;
             g = G;
@@ -56,6 +58,7 @@ namespace Pokemon
 
             if (getHP() > 0)
             {
+                //lives--;
                 removeMe = inventory.First();
                 inventory.RemoveFirst();
                 if (getHP() > 0)
@@ -70,6 +73,7 @@ namespace Pokemon
             else
             {
                 lives--;
+                Position = start;
                 //Play death animation
                 if (lives < 0)
                 {
@@ -156,7 +160,7 @@ namespace Pokemon
                 {
                     if (attacked == 0)
                     {
-                        Attack a = new Attack(g, this.Position, inventory.First().type, lastWalk);
+                        Attack a = new Attack(g, new Vector2(Position.X, Position.Y - 20), inventory.First().type, lastWalk);
                         Game.Components.Add(a);
                         attacked = 1;
                     }
