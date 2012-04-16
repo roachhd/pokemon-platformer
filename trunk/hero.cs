@@ -130,7 +130,7 @@ namespace Pokemon
                 if (x == 0)
                     inventory.ElementAt(x).Position = new Vector2(410, 40);
                 else
-                    inventory.ElementAt(x).Position = new Vector2(420 + (30 * x), 40);
+                    inventory.ElementAt(x).Position = new Vector2(420 + (30 * x), 30);
             }
 
         }
@@ -142,7 +142,6 @@ namespace Pokemon
         {
             font = Game.Content.Load<SpriteFont>("myFont");
             Sprite = Game.Content.Load<Texture2D>("mage");
-            uiFrame = Game.Content.Load<Texture2D>("frame");
 
             Vector2 offset = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
             Position = Position - offset;
@@ -245,6 +244,7 @@ namespace Pokemon
                         //else it hit the bottom, but this should never happen.
                     }
 
+                    if (boundingBox.Top < 50) Position = new Vector2(Position.X, 50);
                     if (boundingBox.Left < 25) Position = new Vector2(25, Position.Y);
                     if (boundingBox.Right >= 775) Position = new Vector2(725, Position.Y);
                     //if (boundingBox.Top < 40) Position = new Vector2(Position.X, 40 + boundingBox.Height / 2);
@@ -312,8 +312,8 @@ namespace Pokemon
 
         public override void Draw(GameTime gameTime)
         {
-            drawInventory();
 
+            drawInventory();
             /*if (jumping == 1)
             { //jumpSprite(); 
             }
@@ -325,9 +325,9 @@ namespace Pokemon
             Rectangle rec = walk(gameTime);
             spriteBatch.Begin();
             //Draw lives
-            spriteBatch.Draw(uiFrame, new Vector2(0, 0), Color.White);
+
             spriteBatch.DrawString(font, "Lives:", new Vector2(10, 2), Color.White);
-            spriteBatch.DrawString(font, "Inventory:", new Vector2(430, 2), Color.White);
+            spriteBatch.DrawString(font, "Inventory:", new Vector2(300, 2), Color.White);
             for (int x = 0; x < lives; x++)
             {
                 spriteBatch.Draw(livesSprite, new Vector2(10 + (x * 30), 30), Color.White);
