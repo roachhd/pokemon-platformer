@@ -14,7 +14,7 @@ namespace Pokemon
 {
     class Character : DrawableGameComponent
     {
-        protected Rectangle boundingBox;
+        //protected Rectangle boundingBox;
         protected int step = 1;
         protected int walked = 0, climbed = 0;
         protected int counter = 0;
@@ -22,6 +22,9 @@ namespace Pokemon
         protected int jumper = 0;
         protected int percent = 400;
         protected int got;
+        protected int jumping;
+        protected int sprwid = 32, sprhei = 32;
+        protected int sprType = 1;
 
 
         public Vector2 Position { get; set; }
@@ -109,15 +112,12 @@ namespace Pokemon
             return rec;
         }
 
-        protected int jumping;
-
-        int sprwid = 50, sprhei = 50;
 
         protected override void LoadContent()
         {
 
             Sprite = Game.Content.Load<Texture2D>("mage");
-            sprwid = 50; sprhei = 50;
+            //sprwid = 32; sprhei = 32;
             Vector2 offset = new Vector2(sprwid / 2, sprhei / 2);
             Position = Position - offset;
 
