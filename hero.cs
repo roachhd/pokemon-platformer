@@ -18,6 +18,7 @@ namespace Pokemon
     class hero : Character
     {
         SpriteFont font;
+        Texture2D uiFrame;
 
         int lives;
         Texture2D livesSprite;
@@ -31,7 +32,7 @@ namespace Pokemon
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, 50, 50);
+                return new Rectangle((int)Position.X, (int)Position.Y, sprwid - 2, sprhei);
             }
         }
         Game g;
@@ -126,7 +127,10 @@ namespace Pokemon
             //Inventory
             for (int x = 0; x < getHP(); x++)
             {
-                inventory.ElementAt(x).Position = new Vector2(410 + (30 * x), 40);
+                if (x == 0)
+                    inventory.ElementAt(x).Position = new Vector2(410, 40);
+                else
+                    inventory.ElementAt(x).Position = new Vector2(420 + (30 * x), 40);
             }
 
         }
@@ -138,6 +142,7 @@ namespace Pokemon
         {
             font = Game.Content.Load<SpriteFont>("myFont");
             Sprite = Game.Content.Load<Texture2D>("mage");
+            uiFrame = Game.Content.Load<Texture2D>("frame");
 
             Vector2 offset = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
             Position = Position - offset;
@@ -160,7 +165,7 @@ namespace Pokemon
                 {
                     if (attacked == 0)
                     {
-                        Attack a = new Attack(g, new Vector2(Position.X, Position.Y - 20), inventory.First().type, lastWalk);
+                        Attack a = new Attack(g, this.Position, inventory.First().type, lastWalk);
                         Game.Components.Add(a);
                         attacked = 1;
                     }
@@ -216,9 +221,10 @@ namespace Pokemon
                 Ground b = c as Ground;
                 if (b != null)
                 {
+                    int diff = sprhei - 25; //25 = Ground height
                     if (boundingBox.Intersects(b.bb) && ((b.type == 1) || (b.type == 2) || (b.type == 3)))
                     {
-                        if ((Position.Y > (b.bb.Top - 39)) && (Position.Y < (b.bb.Bottom - 39)))
+                        if ((Position.Y > (b.bb.Top - diff)) && (Position.Y < (b.bb.Bottom - diff)))
                         // if the main player's position is between the top and the bottom of the bounding box
                         {
                             //it's a side collision.  check if position is to the left or right, and handle appropriately
@@ -319,7 +325,9 @@ namespace Pokemon
             Rectangle rec = walk(gameTime);
             spriteBatch.Begin();
             //Draw lives
-            spriteBatch.DrawString(font, "Lives:", new Vector2(10, 5), Color.White);
+            spriteBatch.Draw(uiFrame, new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(font, "Lives:", new Vector2(10, 2), Color.White);
+            spriteBatch.DrawString(font, "Inventory:", new Vector2(430, 2), Color.White);
             for (int x = 0; x < lives; x++)
             {
                 spriteBatch.Draw(livesSprite, new Vector2(10 + (x * 30), 30), Color.White);
