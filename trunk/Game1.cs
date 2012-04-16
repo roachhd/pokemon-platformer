@@ -28,6 +28,7 @@ namespace Pokemon
         private hero player;
         private bool playerInit = false;
         Random random = new Random();
+        private Texture2D uiFrame;
         //public static Layer[] layers;
 
 
@@ -154,6 +155,8 @@ namespace Pokemon
                 }
 
             }
+
+
             base.Initialize();
         }
 
@@ -167,6 +170,8 @@ namespace Pokemon
             spriteBatch = new SpriteBatch(GraphicsDevice);
             menuFont = Content.Load<SpriteFont>("myfont");
             background = Content.Load<Texture2D>("backgroundjungle"); //Eventually we need some nice pixel art here.
+
+            uiFrame = Content.Load<Texture2D>("frame");
             // TODO: use this.Content to load your game content here
         }
 
@@ -261,6 +266,7 @@ namespace Pokemon
                             Window.ClientBounds.Height), null,
                             Color.White, 0, Vector2.Zero,
                             SpriteEffects.None, 0);
+                    spriteBatch.Draw(uiFrame, new Vector2(0, 0), Color.White);
                     spriteBatch.End();
                     base.Draw(gameTime);
                     break;
