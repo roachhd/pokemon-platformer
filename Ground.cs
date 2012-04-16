@@ -23,7 +23,7 @@ namespace Pokemon
                         (int)position.X - sprite.Width / 2,
                         (int)position.Y - sprite.Height,
                         sprite.Width,
-                        sprite.Height + 25);
+                        sprite.Height);
                 }
                 else
                     return new Rectangle(
