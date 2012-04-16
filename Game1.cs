@@ -129,7 +129,7 @@ namespace Pokemon
                         Components.Add(myWorld[i] = player);
                         break;
                     case 3: // Enemy
-                        Components.Add(myWorld[i] = new Enemy(this, TheMatrix[i], player, random.Next(0,3), 20));
+                        Components.Add(myWorld[i] = new Enemy(this, TheMatrix[i], player, random.Next(0,3), 100));
                         break;
                     case 4: // Ladder
                         Components.Add(myWorld[i] = new Ground(this, TheMatrix[i], level[i]));
