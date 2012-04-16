@@ -30,14 +30,14 @@ namespace Pokemon
 {
     class Enemy : Character
     {
-        int sprwid = 50, sprhei = 50;
+        //int sprwid = 50, sprhei = 50;
 
         hero mage;
         public Rectangle boundingBox
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, 50, 50);
+                return new Rectangle((int)Position.X, (int)Position.Y, sprwid, sprhei);
             }
         }
         int Type;
@@ -49,18 +49,19 @@ namespace Pokemon
 
         protected override void LoadContent()
         {
+             Sprite = Game.Content.Load<Texture2D>("enemy");
             if (Type == 1)
-            {
-                Sprite = Game.Content.Load<Texture2D>("enemyred");
+            {//Red
+                sprType = 3;
 
             }
             else if (Type == 2)
-            {
-                Sprite = Game.Content.Load<Texture2D>("enemyblue");
+            {//Blue
+                sprType = 1;
             }
             else
-            {
-                Sprite = Game.Content.Load<Texture2D>("enemyyellow");
+            {//Yellow
+                sprType = 2;
             }
 
 
@@ -136,9 +137,10 @@ namespace Pokemon
                     if (boundingBox.Right >= 775) Position = new Vector2(725, Position.Y);
                     if (b != null)
                     {
+                        int diff = sprhei - 25; //25 = Ground height
                         if (boundingBox.Intersects(b.bb) && ((b.type == 1) || (b.type == 2) || (b.type == 3)))
                         {
-                            if ((Position.Y > (b.bb.Top - 30)) && (Position.Y < (b.bb.Bottom - 30)))
+                            if ((Position.Y > (b.bb.Top - diff)) && (Position.Y < (b.bb.Bottom - diff)))
                             // if the main player's position is between the top and the bottom of the bounding box
                             {
                                 //it's a side collision.  check if position is to the left or right, and handle appropriately
