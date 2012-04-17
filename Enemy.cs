@@ -33,7 +33,7 @@ namespace Pokemon
 
         protected override void LoadContent()
         {
-            
+            deathanim = Game.Content.Load<Texture2D>("attacked");
             if (Type == 1)
             {//Red
                 sprType = 3;
@@ -83,7 +83,10 @@ namespace Pokemon
 
         int died = 0;
         int dying = 0;
+        int deathAnimation = -1;
         Attack at = null;
+        Rectangle deathrec;
+        Texture2D deathanim;
         public override void Update(GameTime gameTime)
         {
 
@@ -111,8 +114,13 @@ namespace Pokemon
                                 if (life <= 0)
                                 {
 
+
                                     at = (Attack)c;
                                     died = 1;
+
+                                    if (at.Type == 1) deathrec = new Rectangle(0, 0, 33, 33);//red
+                                    else if (at.Type == 2) deathrec = new Rectangle(33, 0, 33, 33);//blue
+                                    else deathrec = new Rectangle(66, 0, 33, 33);//yellow
                                 }
                             }
                         }
@@ -199,14 +207,15 @@ namespace Pokemon
             else
             {
 
-
-
-                //animacao de quando morreu
                 if (dying < 60)
                 {
-                    if (dying % 15 == 0)
+                    if (dying % 10 == 0)
                     {
-                        //aqui troca o frame da animacao do monstro morrendo!!!
+                        //monster dying animation
+
+                        //((Attack)at).Type = 1;
+
+                        deathAnimation *= -1;
                     }
 
                     dying++;
@@ -239,6 +248,14 @@ namespace Pokemon
             spriteBatch.Begin();
             spriteBatch.Draw(Sprite, Position, rec, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
+
+
+            if (deathAnimation == 1)
+            {
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                spriteBatch.Draw(deathanim, Position, deathrec, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+                spriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }
