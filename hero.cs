@@ -12,13 +12,15 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace Pokemon
+namespace pokemon
 {
 
     class hero : Character
     {
         SpriteFont font;
         Texture2D uiFrame;
+
+        Texture2D hit;
 
         int lives;
         Texture2D livesSprite;
@@ -147,6 +149,7 @@ namespace Pokemon
             Position = Position - offset;
 
             livesSprite = Game.Content.Load<Texture2D>("lives");
+            hit = Game.Content.Load<Texture2D>("heroattacked");
             livesOffset = new Vector2(livesSprite.Width / 2, livesSprite.Height / 2);
 
 
@@ -285,6 +288,8 @@ namespace Pokemon
                     {
                         score += t.points;
                         removeMe = t;
+                        plus = 1;
+                        wheretodraw = Position + new Vector2(0,-32);
                     }
                 }
 
@@ -295,6 +300,7 @@ namespace Pokemon
                     {
                         removeMe2 = getHit();
                         removeMe = e;
+                        gothit = 1;
                     }
                 }
             }
@@ -311,7 +317,9 @@ namespace Pokemon
             base.Update(gameTime);
         }
 
-
+        int plus = 0;
+        int gothit = 0;
+        Vector2 wheretodraw;
 
         public override void Draw(GameTime gameTime)
         {
@@ -329,6 +337,31 @@ namespace Pokemon
             spriteBatch.Begin();
             //Draw lives
 
+            if (plus > 30) {
+                plus = 0;
+            }
+            else if (plus > 0) {
+                spriteBatch.DrawString(font, "+1", wheretodraw, Color.White);
+                plus++;
+            }
+
+            //Draw Hero
+            spriteBatch.Draw(Sprite, Position, rec, typeCol, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+            if (gothit > 30)
+            {
+                gothit = 0;
+            }
+            else if (gothit > 0)
+            {
+                if (gothit % 10 == 0) { }
+                else
+                {
+                    spriteBatch.Draw(hit, Position, Color.White);
+                }
+                gothit++;
+            }
+
             spriteBatch.DrawString(font, "Lives:", new Vector2(10, 2), Color.White);
             spriteBatch.DrawString(font, "Inventory:", new Vector2(300, 2), Color.White);
             for (int x = 0; x < lives; x++)
@@ -337,9 +370,6 @@ namespace Pokemon
             }
             //Draw Score
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(600, 5), Color.White);
-
-            //Draw Hero
-            spriteBatch.Draw(Sprite, Position, rec, typeCol, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             spriteBatch.End();
 
