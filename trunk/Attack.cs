@@ -21,7 +21,7 @@ namespace Pokemon
 
         Texture2D Sprite;
         SpriteBatch spriteBatch;
-        int sprW=33, sprH=33;
+        int sprW = 33, sprH = 33;
         public Rectangle boundingBox;
         Rectangle spr;
 
@@ -40,7 +40,7 @@ namespace Pokemon
         {
             Sprite = Game.Content.Load<Texture2D>("attack");
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
-            if (Type >3 || Type < 1)
+            if (Type > 3 || Type < 1)
             {
                 Type = 1;
 
@@ -49,13 +49,13 @@ namespace Pokemon
             Vector2 offset = new Vector2(sprW / 2, sprH / 2); //is this ok??? or first width then height
             Position = Position - offset;
 
-            
+
         }
 
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-             boundingBox=new Rectangle((int)Position.X, (int)Position.Y, sprW-5, sprH-10);
+            boundingBox = new Rectangle((int)Position.X, (int)Position.Y, sprW - 5, sprH - 10);
             //Console.WriteLine("dir: " + Dir);
             if (Dir < 0)
             { //left
@@ -71,7 +71,7 @@ namespace Pokemon
                 Ground b = c as Ground;
                 if (b != null)
                 {
-                    if (boundingBox.Intersects(b.bb) && (boundingBox.Top > b.bb.Top)&&(boundingBox.Left > b.bb.Left) && ((b.type == 1) || (b.type == 2) || (b.type == 3)))
+                    if (boundingBox.Intersects(b.bb) && (boundingBox.Top > b.bb.Top) && (boundingBox.Left > b.bb.Left) && ((b.type == 1) || (b.type == 2) || (b.type == 3)))
                     {
                         spr = new Rectangle(0, 0, 0, 0);
                         Position = new Vector2(0, 0);
@@ -87,16 +87,16 @@ namespace Pokemon
             }
         }
 
-        
+
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(); 
-            if (Dir > 0) 
-                spriteBatch.Draw(Sprite, Position, spr, Color.White,  MathHelper.ToRadians(180), Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Begin();
+            if (Dir > 0)
+                spriteBatch.Draw(Sprite, Position, spr, Color.White, MathHelper.ToRadians(180), Vector2.Zero, 1, SpriteEffects.None, 0);
             else
                 spriteBatch.Draw(Sprite, Position, spr, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-           
+
             spriteBatch.End();
 
             base.Draw(gameTime);
