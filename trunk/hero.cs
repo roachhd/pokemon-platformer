@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace pokemon
+namespace Pokemon
 {
 
     class hero : Character
@@ -20,14 +20,14 @@ namespace pokemon
         SpriteFont font;
         Texture2D uiFrame;
 
-        Texture2D hit;
-
         int lives;
         Texture2D livesSprite;
         Vector2 livesOffset;
         Vector2 start;
 
         int score;
+
+        
 
         int lastWalk = 1; int attacked = 0;
         Rectangle boundingBox
@@ -38,6 +38,11 @@ namespace pokemon
             }
         }
         Game g;
+
+        public Rectangle getBoundingBox()
+        {
+            return this.boundingBox;
+        }
 
 
         public hero(Game G, Vector2 position, Vector2 st)
@@ -149,30 +154,30 @@ namespace pokemon
             Position = Position - offset;
 
             livesSprite = Game.Content.Load<Texture2D>("lives");
-            hit = Game.Content.Load<Texture2D>("heroattacked");
             livesOffset = new Vector2(livesSprite.Width / 2, livesSprite.Height / 2);
 
 
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
-        int counterAttack = 30;
+
         public override void Update(GameTime gameTime)
         {
+            if (lives == 0)
+            {
+                Game1.Screen = Game1.GameState.GameOver;
+            }
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState k = Keyboard.GetState();
 
-
-            if (counterAttack <30) counterAttack++;
             if (k.IsKeyDown(Keys.Space))
             {
                 if (inventory.First != null)
                 {
-                    if ((attacked == 0) && (counterAttack >=30))
+                    if (attacked == 0)
                     {
                         Attack a = new Attack(g, this.Position, inventory.First().type, lastWalk);
                         Game.Components.Add(a);
                         attacked = 1;
-                        counterAttack = 0;
                     }
                 }
             }
@@ -288,8 +293,8 @@ namespace pokemon
                     {
                         score += t.points;
                         removeMe = t;
-                        plus = 1;
-                        wheretodraw = Position + new Vector2(0,-32);
+                        Game1.foodCount--;
+
                     }
                 }
 
@@ -300,8 +305,16 @@ namespace pokemon
                     {
                         removeMe2 = getHit();
                         removeMe = e;
-                        gothit = 1;
                     }
+                }
+                Portal p = c as Portal;
+
+                if (p != null)
+                {
+                    if (Game1.foodCount <= 0)
+                        p.SetActive(true); 
+                    if(p.IsUsed())
+                        Game1.Screen = Game1.GameState.LevelComplete;
                 }
             }
 
@@ -317,9 +330,7 @@ namespace pokemon
             base.Update(gameTime);
         }
 
-        int plus = 0;
-        int gothit = 0;
-        Vector2 wheretodraw;
+
 
         public override void Draw(GameTime gameTime)
         {
@@ -337,31 +348,6 @@ namespace pokemon
             spriteBatch.Begin();
             //Draw lives
 
-            if (plus > 30) {
-                plus = 0;
-            }
-            else if (plus > 0) {
-                spriteBatch.DrawString(font, "+1", wheretodraw, Color.White);
-                plus++;
-            }
-
-            //Draw Hero
-            spriteBatch.Draw(Sprite, Position, rec, typeCol, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-
-            if (gothit > 30)
-            {
-                gothit = 0;
-            }
-            else if (gothit > 0)
-            {
-                if (gothit % 10 == 0) { }
-                else
-                {
-                    spriteBatch.Draw(hit, Position, Color.White);
-                }
-                gothit++;
-            }
-
             spriteBatch.DrawString(font, "Lives:", new Vector2(10, 2), Color.White);
             spriteBatch.DrawString(font, "Inventory:", new Vector2(300, 2), Color.White);
             for (int x = 0; x < lives; x++)
@@ -371,10 +357,12 @@ namespace pokemon
             //Draw Score
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(600, 5), Color.White);
 
+            //Draw Hero
+            spriteBatch.Draw(Sprite, Position, rec, typeCol, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
     }
 }
-
