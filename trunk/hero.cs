@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace Pokemon
+namespace pokemon
 {
 
     class hero : Character
@@ -152,21 +152,24 @@ namespace Pokemon
 
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
-
+        int counterAttack = 30;
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState k = Keyboard.GetState();
 
+
+            if (counterAttack <30) counterAttack++;
             if (k.IsKeyDown(Keys.Space))
             {
                 if (inventory.First != null)
                 {
-                    if (attacked == 0)
+                    if ((attacked == 0) && (counterAttack >=30))
                     {
                         Attack a = new Attack(g, this.Position, inventory.First().type, lastWalk);
                         Game.Components.Add(a);
                         attacked = 1;
+                        counterAttack = 0;
                     }
                 }
             }
@@ -203,7 +206,7 @@ namespace Pokemon
 
             IGameComponent removeMe = null;
             IGameComponent removeMe2 = null;
-            
+
             //Collision Detection (for stones)
             foreach (var c in Game.Components)
             {
@@ -238,7 +241,7 @@ namespace Pokemon
                         {
                             Position = new Vector2(Position.X, b.bb.Top - boundingBox.Height + 1);
                         }
-                        
+
                         else
                             Position = new Vector2(Position.X, b.bb.Bottom);
                         //else it hit the bottom, but this should never happen.
@@ -344,3 +347,4 @@ namespace Pokemon
         }
     }
 }
+
