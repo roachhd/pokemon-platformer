@@ -24,11 +24,13 @@ namespace Pokemon
         public static Vector2[] TheMatrix;
         DrawableGameComponent[] myWorld = new DrawableGameComponent[768];
         public static int[] level;
+        private int levelCounter = 4;
         private Texture2D background;
         private hero player;
         private bool playerInit = false;
         Random random = new Random();
         private Texture2D uiFrame;
+        public static int foodCount;
         //public static Layer[] layers;
 
 
@@ -39,15 +41,16 @@ namespace Pokemon
             Exit
         };
 
-        private enum GameState
+        public enum GameState
         {
             Start,
             HighScores,
             InGame,
             GameOver,
+            LevelComplete,
             PauseMenu
         };
-        GameState Screen = GameState.Start;
+        public static GameState Screen = GameState.Start;
         private StartMenu SelectedMenu = StartMenu.NewGame;
 
         private SpriteFont menuFont;
@@ -73,9 +76,9 @@ namespace Pokemon
             return TheMatrix;
         }
 
-        public int[] LevelRead()
+        public int[] LevelRead(string s)
         {
-            StreamReader myFile = new StreamReader("level3.txt");
+            StreamReader myFile = new StreamReader(s);
             level = new int[768];
             int counter = 0;
             string line;
@@ -109,8 +112,10 @@ namespace Pokemon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            foodCount = 0;
             TheMatrix = MatrixInit();
-            level = LevelRead();
+            level = LevelRead("level" + levelCounter + ".txt");
+            
             player = new hero(this, new Vector2(525, 525), new Vector2(525, 525));
             for (int i = 0; i < TheMatrix.Length; i++)
             {
@@ -127,7 +132,7 @@ namespace Pokemon
                             );
                         break;
                     case 2: // Player
-                        
+
                         Components.Add(myWorld[i] = player);
                         break;
                     case 3: // Enemy
@@ -151,6 +156,11 @@ namespace Pokemon
 
                     case 8: // Treasure/Food
                         Components.Add(myWorld[i] = new treasure(1, random.Next(0, 27), this, TheMatrix[i]));
+                        foodCount++;
+                        break;
+                    case 9:
+                        // Add portal
+                        Components.Add(myWorld[i] = new Portal(this, player, TheMatrix[i]));
                         break;
                 }
 
@@ -203,10 +213,40 @@ namespace Pokemon
                     {
                         Screen = GameState.HighScores;
                     }
+                    if (buttonsPressed.IsKeyDown(Keys.Escape))
+                        this.Exit();
+                    break;
+
+                case GameState.LevelComplete:
+                    // Is there stuff to add here?
+                    if (buttonsPressed.IsKeyDown(Keys.Enter))
+                    {
+                        Components.Clear();
+                        levelCounter++;
+                        Screen = GameState.InGame;
+                        Initialize();
+                    }
+                        // next level
                     break;
 
                 case GameState.InGame:
                     base.Update(gameTime);
+                    break;
+
+                case GameState.GameOver:
+                    if (buttonsPressed.IsKeyDown((Keys.R)))
+                    {
+                        Components.Clear();
+                        Screen = GameState.InGame;
+                        Initialize();
+                    }
+                    if (buttonsPressed.IsKeyDown((Keys.H)))
+                    {
+                        Screen = GameState.HighScores;
+                    }
+
+                    if (buttonsPressed.IsKeyDown(Keys.Escape))
+                        this.Exit();
                     break;
 
                 case GameState.HighScores:
@@ -269,6 +309,49 @@ namespace Pokemon
                     spriteBatch.Draw(uiFrame, new Vector2(0, 0), Color.White);
                     spriteBatch.End();
                     base.Draw(gameTime);
+                    break;
+
+                case GameState.LevelComplete:
+                    GraphicsDevice.Clear(Color.White);
+                    spriteBatch.Begin();
+                    const string youwin = "Using wits and your mighty spells, you have conquered!";
+                    const string next = "Press ENTER to teleport to the next dimension, or ESC to quit.";
+                    
+                    spriteBatch.DrawString(menuFont, youwin,
+                        new Vector2((Window.ClientBounds.Width / 2)
+                        - (menuFont.MeasureString(title).X / 2),
+                        (Window.ClientBounds.Height / 2)
+                        - (menuFont.MeasureString(youwin).Y / 2) - 10),
+                        Color.Maroon);
+
+                    spriteBatch.DrawString(menuFont, next,
+                        new Vector2((Window.ClientBounds.Width / 2)
+                        - (menuFont.MeasureString(descript).X / 2),
+                        (Window.ClientBounds.Height / 2)
+                        - (menuFont.MeasureString(next).Y / 2) + 20),
+                        Color.BlueViolet);
+                    spriteBatch.End();
+                    break;
+                case GameState.GameOver:
+                    GraphicsDevice.Clear(Color.White);
+                    spriteBatch.Begin();
+                    const string endtitle = "Your spirit has departed the physical realm.";
+                    const string describeyouroptions = "Press R to restart the level, N to start a new game, H to view high scores, or ESC to exit.";
+
+                    spriteBatch.DrawString(menuFont, endtitle,
+                        new Vector2((Window.ClientBounds.Width / 2)
+                        - (menuFont.MeasureString(title).X / 2),
+                        (Window.ClientBounds.Height / 2)
+                        - (menuFont.MeasureString(endtitle).Y / 2) - 10),
+                        Color.Maroon);
+
+                    spriteBatch.DrawString(menuFont, describeyouroptions,
+                        new Vector2((Window.ClientBounds.Width / 2)
+                        - (menuFont.MeasureString(descript).X / 2),
+                        (Window.ClientBounds.Height / 2)
+                        - (menuFont.MeasureString(describeyouroptions).Y / 2) + 20),
+                        Color.BlueViolet);
+                    spriteBatch.End();
                     break;
                 // Enter lots of fun code stuff here.
             }
