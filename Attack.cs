@@ -16,7 +16,8 @@ namespace Pokemon
          * 2 - blue
          * 3 - yellow
          */
-        int Type; int Dir;
+        public int Type; 
+        int Dir;
         Vector2 Position;
 
         Texture2D Sprite;
