@@ -22,7 +22,7 @@ namespace Pokemon
                     return new Rectangle(
                         (int)position.X - sprite.Width / 2,
                         (int)position.Y - sprite.Height,
-                        sprite.Width,
+                        1,
                         sprite.Height);
                 }
                 else
@@ -78,6 +78,9 @@ namespace Pokemon
                     break;
                 case 4:
                     sprite = Game.Content.Load<Texture2D>("ladder"); //ladder
+                    break;
+                case 5:
+                    sprite = Game.Content.Load<Texture2D>("portal"); //portal
                     break;
 
             }
