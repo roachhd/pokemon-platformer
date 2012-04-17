@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace pokemon
+namespace Pokemon
 {
 
     class hero : Character
@@ -259,7 +259,7 @@ namespace pokemon
                         {
                             if ((step >= 0 && step <= 4) || (step < 0)) //if he had a walking sprite
                                 step = 6;
-                            Position -= new Vector2(0, elapsed) * 50;
+                            Position -= new Vector2(0, elapsed) * 100;
                             climbed = 1;
                         }
                         if (k.IsKeyDown(Keys.Down))
