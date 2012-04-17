@@ -24,13 +24,15 @@ namespace Pokemon
         public static Vector2[] TheMatrix;
         DrawableGameComponent[] myWorld = new DrawableGameComponent[768];
         public static int[] level;
-        private int levelCounter = 4;
+        public static int levelCounter = 2;
         private Texture2D background;
         private hero player;
         private bool playerInit = false;
         Random random = new Random();
         private Texture2D uiFrame;
         public static int foodCount;
+        private Song jungle;
+        private Song creepy1;
         //public static Layer[] layers;
 
 
@@ -114,6 +116,7 @@ namespace Pokemon
             // TODO: Add your initialization logic here
             foodCount = 0;
             TheMatrix = MatrixInit();
+
             level = LevelRead("level" + levelCounter + ".txt");
             
             player = new hero(this, new Vector2(525, 525), new Vector2(525, 525));
@@ -179,7 +182,13 @@ namespace Pokemon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             menuFont = Content.Load<SpriteFont>("myfont");
-            background = Content.Load<Texture2D>("backgroundjungle"); //Eventually we need some nice pixel art here.
+            jungle = Content.Load<Song>("jungle");
+            creepy1 = Content.Load<Song>("creepy1");
+            if (levelCounter == 1 || levelCounter == 3 || levelCounter == 5)
+            {
+                background = Content.Load<Texture2D>("backgroundjungle");
+            }
+            else background = Content.Load<Texture2D>("underwater");    //Eventually we need some nice pixel art here.
 
             uiFrame = Content.Load<Texture2D>("frame");
             // TODO: use this.Content to load your game content here
@@ -207,6 +216,11 @@ namespace Pokemon
                 case GameState.Start:
                     if (buttonsPressed.IsKeyDown(Keys.Enter))
                     {
+                        if (levelCounter == 1 || levelCounter == 3 || levelCounter == 5)
+                        {
+                            MediaPlayer.Play(jungle);
+                        }
+                        else MediaPlayer.Play(creepy1);
                         Screen = GameState.InGame;
                     }
                     if (buttonsPressed.IsKeyDown(Keys.H))
@@ -221,6 +235,7 @@ namespace Pokemon
                     // Is there stuff to add here?
                     if (buttonsPressed.IsKeyDown(Keys.Enter))
                     {
+                        MediaPlayer.Stop();
                         Components.Clear();
                         levelCounter++;
                         Screen = GameState.InGame;
@@ -279,21 +294,52 @@ namespace Pokemon
                 case GameState.Start:
                     GraphicsDevice.Clear(Color.White);
                     spriteBatch.Begin();
-                    const string title = "POKEMON RIPOFF!!!!"; // Insert mind-blowingly awesome game title here.
-                    const string descript = "Press Enter to start a new game, H to view high scores, or ESC to quit. ";
+                    const string title = "LEVELS FROM HELL"; // Insert mind-blowingly awesome game title here.
+                    const string instruct = "Move around with arrow keys and collect the food.";
+                    const string instruct2 = "Launch spells with Space. Get to the Portal when all the food is collected";
+                    const string descript = "Enter = new game";
+                    const string descript2 = "H = view high scores";
+                    const string descript3 = "ESC = quit";
 
                     spriteBatch.DrawString(menuFont, title,
                         new Vector2((Window.ClientBounds.Width / 2)
                         - (menuFont.MeasureString(title).X / 2),
                         (Window.ClientBounds.Height / 2)
-                        - (menuFont.MeasureString(title).Y / 2) - 10),
+                        - (menuFont.MeasureString(title).Y / 2) - 40),
                         Color.Maroon);
+
+                    spriteBatch.DrawString(menuFont, instruct,
+                        new Vector2((Window.ClientBounds.Width / 2)
+                        - (menuFont.MeasureString(instruct).X / 2),
+                        (Window.ClientBounds.Height / 2)
+                        - (menuFont.MeasureString(instruct).Y / 2)),
+                        Color.Blue);
+                    spriteBatch.DrawString(menuFont, instruct2,
+                        new Vector2((Window.ClientBounds.Width / 2)
+                        - (menuFont.MeasureString(instruct2).X / 2),
+                        (Window.ClientBounds.Height / 2)
+                        - (menuFont.MeasureString(instruct2).Y / 2) + 10),
+                        Color.Blue);
 
                     spriteBatch.DrawString(menuFont, descript,
                         new Vector2((Window.ClientBounds.Width / 2)
                         - (menuFont.MeasureString(descript).X / 2),
                         (Window.ClientBounds.Height / 2)
                         - (menuFont.MeasureString(descript).Y / 2) + 20),
+                        Color.BlueViolet);
+
+                    spriteBatch.DrawString(menuFont, descript2,
+                        new Vector2((Window.ClientBounds.Width / 2)
+                        - (menuFont.MeasureString(descript2).X / 2),
+                        (Window.ClientBounds.Height / 2)
+                        - (menuFont.MeasureString(descript2).Y / 2) + 40),
+                        Color.BlueViolet);
+
+                    spriteBatch.DrawString(menuFont, descript3,
+                        new Vector2((Window.ClientBounds.Width / 2)
+                        - (menuFont.MeasureString(descript3).X / 2),
+                        (Window.ClientBounds.Height / 2)
+                        - (menuFont.MeasureString(descript3).Y / 2) + 60),
                         Color.BlueViolet);
                     spriteBatch.End();
                     break;
