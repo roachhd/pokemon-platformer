@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Pokemon
+namespace pokemon
 {
     class Enemy : Character
     {
@@ -106,7 +106,7 @@ namespace Pokemon
                         //put this in the enemy class
                         if (a != null)
                         {
-                            if (boundingBox.Intersects(a.boundingBox))
+                            if (boundingBox.Intersects(a.boundingBox) && boundingBox.Left < a.boundingBox.Left)
                             {
                                 life -= calculateDamage(mage.giveInventory().First().type, this.Type);
                                 Console.WriteLine("monster life: " + life);
