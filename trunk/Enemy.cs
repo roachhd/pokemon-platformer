@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,19 +33,22 @@ namespace Pokemon
 
         protected override void LoadContent()
         {
-             Sprite = Game.Content.Load<Texture2D>("enemy");
+            
             if (Type == 1)
             {//Red
                 sprType = 3;
+                Sprite = Game.Content.Load<Texture2D>("enemyred");
 
             }
             else if (Type == 2)
             {//Blue
                 sprType = 1;
+                Sprite = Game.Content.Load<Texture2D>("enemyblue");
             }
             else
             {//Yellow
                 sprType = 2;
+                Sprite = Game.Content.Load<Texture2D>("enemyyellow");
             }
 
 
@@ -83,7 +87,7 @@ namespace Pokemon
         public override void Update(GameTime gameTime)
         {
 
-            
+
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState k = Keyboard.GetState();
 
@@ -232,7 +236,6 @@ namespace Pokemon
         public override void Draw(GameTime gameTime)
         {
             Rectangle rec = base.walk(gameTime);
-
             spriteBatch.Begin();
             spriteBatch.Draw(Sprite, Position, rec, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
@@ -242,4 +245,3 @@ namespace Pokemon
     }
 }
 
-        
