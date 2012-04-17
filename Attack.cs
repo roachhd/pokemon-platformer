@@ -1,4 +1,4 @@
-using System; 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +16,7 @@ namespace Pokemon
          * 2 - blue
          * 3 - yellow
          */
-        public int Type; 
-        int Dir;
+        public int Type; int Dir;
         Vector2 Position;
 
         Texture2D Sprite;
@@ -56,7 +55,7 @@ namespace Pokemon
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-             boundingBox=new Rectangle((int)Position.X, (int)Position.Y, sprW, sprH);
+             boundingBox=new Rectangle((int)Position.X, (int)Position.Y, sprW-5, sprH-10);
             //Console.WriteLine("dir: " + Dir);
             if (Dir < 0)
             { //left
@@ -67,6 +66,25 @@ namespace Pokemon
                 Position += new Vector2(elapsed, 0) * 100;
             }
             base.Update(gameTime);
+            foreach (var c in Game.Components)
+            {
+                Ground b = c as Ground;
+                if (b != null)
+                {
+                    if (boundingBox.Intersects(b.bb) && (boundingBox.Top > b.bb.Top)&&(boundingBox.Left > b.bb.Left) && ((b.type == 1) || (b.type == 2) || (b.type == 3)))
+                    {
+                        spr = new Rectangle(0, 0, 0, 0);
+                        Position = new Vector2(0, 0);
+                    }
+
+                    if (boundingBox.Top < 50 || boundingBox.Left < 25 || boundingBox.Right >= 800)
+                    {
+                        spr = new Rectangle(0, 0, 0, 0);
+
+                        Position = new Vector2(0, 0);
+                    }
+                }
+            }
         }
 
         
