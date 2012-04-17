@@ -62,27 +62,56 @@ namespace Pokemon
 
         protected override void LoadContent()
         {
-            switch (type)
+            if (Game1.levelCounter == 1 || Game1.levelCounter == 3 || Game1.levelCounter == 5)
             {
-                case 0:
-                    sprite = Game.Content.Load<Texture2D>("grass"); //air
-                    break;
-                case 1:
-                    sprite = Game.Content.Load<Texture2D>("grass");  //regular
-                    break;
-                case 2:
-                    sprite = Game.Content.Load<Texture2D>("ground test"); //goo
-                    break;
-                case 3:
-                    sprite = Game.Content.Load<Texture2D>("withit"); //ice
-                    break;
-                case 4:
-                    sprite = Game.Content.Load<Texture2D>("ladder"); //ladder
-                    break;
-                case 5:
-                    sprite = Game.Content.Load<Texture2D>("portal"); //portal
-                    break;
+                switch (type)
+                {
+                    case 0:
+                        sprite = Game.Content.Load<Texture2D>("grass"); //air
+                        break;
+                    case 1:
+                        sprite = Game.Content.Load<Texture2D>("grass"); //regular
+                        break;
+                    case 2:
+                        sprite = Game.Content.Load<Texture2D>("ground test"); //goo
+                        break;
+                    case 3:
+                        sprite = Game.Content.Load<Texture2D>("withit"); //ice
+                        break;
+                    case 4:
+                        sprite = Game.Content.Load<Texture2D>("ladder"); //ladder
+                        break;
+                    case 5:
+                        sprite = Game.Content.Load<Texture2D>("portal"); //portal
+                        break;
 
+                }
+            }
+
+            else
+            {
+                switch (type)
+                {
+                    case 0:
+                        sprite = Game.Content.Load<Texture2D>("waterTile"); //air
+                        break;
+                    case 1:
+                        sprite = Game.Content.Load<Texture2D>("waterTile"); //regular
+                        break;
+                    case 2:
+                        sprite = Game.Content.Load<Texture2D>("ground test"); //goo
+                        break;
+                    case 3:
+                        sprite = Game.Content.Load<Texture2D>("withit"); //ice
+                        break;
+                    case 4:
+                        sprite = Game.Content.Load<Texture2D>("ladder"); //ladder
+                        break;
+                    case 5:
+                        sprite = Game.Content.Load<Texture2D>("portal"); //portal
+                        break;
+
+                }
             }
 
             spritebatch = new SpriteBatch(Game.GraphicsDevice);
