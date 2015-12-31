@@ -1,0 +1,1 @@
+a 2d vertical scrolling platformer where enemies with different types can be killed by changing the type of the main playable character to favorable types.  By killing the enemies and collecting treasures, the player can increase his or her score.
